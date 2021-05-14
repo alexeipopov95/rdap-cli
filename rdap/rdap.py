@@ -1,25 +1,24 @@
 import click
-from rdap.common.my_test import ASD
+
 
 # help texts
 GATHER_RDAP = "The domain name. I.e 'google.com'"
 
-
 @click.group()
-def rdap() -> None:
+def cli() -> None:
     pass
 
-@rdap.command()
+@cli.command()
 @click.option("--domain", help=GATHER_RDAP)
 def gather(domain: str) -> None:
     click.echo(
         "Gathering information about {0}...".format(domain)
     )
 
-@rdap.command()
+@cli.command()
 def save() -> None:
     click.echo("Saving...")
 
 
 if __name__ == "__main__":
-    rdap()
+    cli()

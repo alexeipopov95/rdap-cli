@@ -12,7 +12,11 @@ setup(
     version = "0.0.1",
     author = "Alexei Popov",
     author_email = "",
-    #entry_points = {"console_scripts" : ["rdap=rdap"]},
+    entry_points = {
+        "console_scripts" : [
+            "rdap=rdap.rdap:cli",
+        ]
+    },
     description= (
         "A simple CLI designed to offer a quick way of gathering domain"
         "data information. And for practicing."
@@ -21,3 +25,23 @@ setup(
     install_requires = INSTALL_REQUIREMENTS,
     packages = PACKAGES
 )
+
+"""
+setup(
+    name = "rdap",
+    version = "0.0.1",
+    author = "Alexei Popov",
+    author_email = "",
+    py_modules=['rdap'],
+    install_requires=[
+        'Click',
+        'requests',
+        'pytest'
+    ],
+    entry_points={
+        'console_scripts': [
+            'rdap = rdap.rdap:cli',
+        ],
+    },
+)
+"""
