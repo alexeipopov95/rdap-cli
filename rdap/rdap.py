@@ -1,4 +1,5 @@
 import click
+from rdap.common.my_test import ASD
 
 # help texts
 GATHER_RDAP = "The domain name. I.e 'google.com'"

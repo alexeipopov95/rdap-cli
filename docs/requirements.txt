@@ -1,5 +1,4 @@
 # Include the testing requirements.
--r requirements-test.txt
 
 appdirs==1.4.3
 attrs==21.2.0
@@ -30,3 +29,5 @@ six==1.14.0
 toml==0.10.2
 urllib3==1.25.8
 webencodings==0.5.1
+
+-r requirements-tests.txt
