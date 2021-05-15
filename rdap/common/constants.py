@@ -19,3 +19,10 @@ class FormatterStatus:
     ERROR = "ERROR"
     SUCCESS = "SUCCESS"
     DEBUG = "DEBUG"
+
+
+class RdapDomainEvents:
+    REGISTRATION = "registration"
+    EXPIRATION = "expiration"
+    LAST_CHANGED = "last changed"
+    LAST_CHANGED_RDAP = "last update of RDAP database"
