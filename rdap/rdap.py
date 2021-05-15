@@ -1,24 +1,15 @@
 import click
+from rdap.commands.gather import gather
+from rdap.commands.save import save
 
-
-# help texts
-GATHER_RDAP = "The domain name. I.e 'google.com'"
 
 @click.group()
 def cli() -> None:
     pass
 
-@cli.command()
-@click.option("--domain", help=GATHER_RDAP)
-def gather(domain: str) -> None:
-    click.echo(
-        "Gathering information about {0}...".format(domain)
-    )
 
-@cli.command()
-def save() -> None:
-    click.echo("Saving...")
-
+cli.add_command(gather)
+cli.add_command(save)
 
 if __name__ == "__main__":
     cli()
