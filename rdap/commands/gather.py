@@ -39,5 +39,5 @@ def gather(domain: str) -> None:
         )
     
     rdap = RdapApi(domain=domain)
-
+    print(rdap.get_domain_data(domain))
     

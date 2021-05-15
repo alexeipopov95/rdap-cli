@@ -1,6 +1,7 @@
-import json
+import click
 import requests
-from .retry_strategy import SimpleRetryStrategy
+from rdap.utils.utils import formater
+from rdap.common.constants import FormatterStatus
 
 class RdapClient:
     """
@@ -9,6 +10,7 @@ class RdapClient:
 
     DELAY = 500 # ms
     RETRY_COUNT = 3
+    VALID_URL = True
     
     def __init__(self) -> None:
         self._client = requests.Session()
@@ -20,11 +22,17 @@ class RdapClient:
         }
     
     def _get(self, url) -> None:
-        response = self._client.get(
-            url=url,
-            headers=self._headers
-        )
 
-        if response.status_code == 200:
-            return response.json()
+        if not url:
+            self.VALID_URL = False
+
+        else:
+
+            response = self._client.get(
+                url=url,
+                headers=self._headers
+            )
+
+            if response.status_code == 200:
+                return response.json()
     

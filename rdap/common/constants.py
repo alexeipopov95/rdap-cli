@@ -21,10 +21,10 @@ class FormatterStatus:
     DEBUG = "DEBUG"
 
     formater_color_map = {
-        INFO : MessageColors.WHITE,
+        INFO : MessageColors.YELLOW,
         ERROR : MessageColors.RED,
         SUCCESS : MessageColors.GREEN,
-        DEBUG : MessageColors.YELLOW,
+        DEBUG : MessageColors.WHITE,
     }
 
 

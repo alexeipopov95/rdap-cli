@@ -41,7 +41,14 @@ def save_file_data(data:dict, filename:str) -> None:
         json.dump(data, input)
 
 def string_to_datetime(date:str) -> datetime:
-    return dateutil.parser.parse(date).replace(tzinfo=None)
+    if date:
+        return dateutil.parser.parse(date).replace(tzinfo=None)
+    return date
+
+def datetime_to_string(date:datetime) -> str:
+    if date:
+        return date.strftime("%Y-%m-%d %H:%M:%S")
+    return date
 
 def domain_validator(domain:str) -> bool:
     """Based on a regex define if a domain is valid or not
