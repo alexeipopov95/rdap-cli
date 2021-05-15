@@ -20,6 +20,13 @@ class FormatterStatus:
     SUCCESS = "SUCCESS"
     DEBUG = "DEBUG"
 
+    formater_color_map = {
+        INFO : MessageColors.WHITE,
+        ERROR : MessageColors.RED,
+        SUCCESS : MessageColors.GREEN,
+        DEBUG : MessageColors.YELLOW,
+    }
+
 
 class RdapDomainEvents:
     REGISTRATION = "registration"

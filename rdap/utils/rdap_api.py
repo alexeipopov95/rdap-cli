@@ -1,13 +1,19 @@
 import os
+import click
 from datetime import datetime
+
 from rdap.utils.endpoints import RDAP_DNS
 from rdap.utils.utils import (
-    _load_file_data,
-    _save_file_data,
-    _string_to_datetime,
+    formater,
+    load_file_data,
+    save_file_data,
+    string_to_datetime,
 )
-from rdap.common.constants import RdapDomainEvents
-
+from rdap.common.constants import (
+    RdapDomainEvents,
+    FormatterStatus
+)
+from rdap.services.rdap_client import RdapClient
 PERIODS = [
     RdapDomainEvents.REGISTRATION,
     RdapDomainEvents.EXPIRATION,
@@ -18,24 +24,30 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RDAP_DNS_FILENAME = "dns.json"
 
 class RdapApi:
-    RDAP_DNS = RDAP_DNS
 
     def __init__(self, domain) -> None:
         self.domain = domain
-        self.file_path = os.path.join(BASE_DIR, "templates", "dns")
+        self.file_dir = os.path.join(BASE_DIR, "templates", "dns")
+        self.file_path = os.path.join(BASE_DIR, "templates", "dns", RDAP_DNS_FILENAME)
+        self._client = RdapClient()
 
-        if not os.listdir(self.file_path):
-            # TODO: RdapClient must retrive the DNS file and parse it.
-            pass
+        if not os.listdir(self.file_dir):
+            click.echo(
+                formater(
+                    message="First time it could take a little longer, please wait.",
+                    status=FormatterStatus.SUCCESS
+                )
+            )
+            response = self._client._get(RDAP_DNS)
+            save_file_data(response, self.file_path)
 
         else:
-            file_date = os.path.getmtime(RDAP_DNS_FILENAME)
+            file_date = os.path.getmtime(self.file_path)
             file_date = datetime.fromtimestamp(file_date)
-            now = datetime.now()
 
-            if (now - file_date).days > 7:
-                # TODO: RdapClient update the DNS file.
-                pass
+            if (datetime.now() - file_date).days > 7:
+                response = self._client._get(RDAP_DNS)
+                save_file_data(response, RDAP_DNS_FILENAME)
 
     @classmethod
     def _find_url(cls, services:list, domain:str) -> str:
@@ -66,7 +78,7 @@ class RdapApi:
         Returns:
             str: [return a valid endpoint if the tld is part of RDAP]
         """
-        data = _load_file_data(RDAP_DNS_FILENAME)
+        data = load_file_data(RDAP_DNS_FILENAME)
         context = {
             "description" : data['description'],
             "publication" : data['publication'],
@@ -99,16 +111,16 @@ class RdapApi:
         for event in context_data['response']['data']['events']:
 
             if event['eventAction'] == RdapDomainEvents.REGISTRATION:
-                events['create_date'] = _string_to_datetime(event['eventDate'])
+                events['create_date'] = string_to_datetime(event['eventDate'])
 
             elif event['eventAction'] == RdapDomainEvents.EXPIRATION:
-                events['expire_date'] = _string_to_datetime(event['eventDate'])
+                events['expire_date'] = string_to_datetime(event['eventDate'])
 
             elif event['eventAction'] == RdapDomainEvents.LAST_CHANGED:
-                events['update_date'] = _string_to_datetime(event['eventDate'])
+                events['update_date'] = string_to_datetime(event['eventDate'])
 
             elif event['eventAction'] == RdapDomainEvents.LAST_CHANGED_RDAP:
-                events['update_date_rdap'] = _string_to_datetime(event['eventDate'])
+                events['update_date_rdap'] = string_to_datetime(event['eventDate'])
 
 
         return events

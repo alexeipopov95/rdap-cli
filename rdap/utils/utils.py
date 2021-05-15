@@ -1,28 +1,23 @@
+from os import stat
 import click
 import json
 import dateutil.parser
+import validators
 from datetime import datetime
 
-from rdap.common.constants import FormatterStatus as STATUS
-from rdap.common.constants import MessageColors as COLORS
+from rdap.common.constants import (
+    FormatterStatus,
+)
 
 
-def formater(
-    message:str,
-    status:str=STATUS.INFO,
-    color:str=COLORS.WHITE
-) -> None:
-    """function designed to format dinamically the 
-    output messages for every case it needs
+def formater(message:str, status:str) -> click.style:
+    status_color = FormatterStatus.formater_color_map.get(status, "INFO")
+    return click.style(
+        f"[{status}] - {message}",
+        fg=status_color
+    )
 
-    Args:
-        message (str): [the notifcation or the error message]
-        status (str, optional): [status of the output
-        the values can be info, error, success or debug]. Defaults to STATUS.INFO.
-        color (str, optional): [Just color]. Defaults to COLORS.WHITE.
-    """
-
-def _load_file_data(filename:str) -> dict:
+def load_file_data(filename:str) -> dict:
     """receive a file name and return as a dict
     Args:
         filename (str): [filename]
@@ -34,7 +29,7 @@ def _load_file_data(filename:str) -> dict:
         data = json.load(output)
     return data
 
-def _save_file_data(data:dict, filename:str) -> None:
+def save_file_data(data:dict, filename:str) -> None:
     """Save data in a file
 
     Args:
@@ -45,5 +40,19 @@ def _save_file_data(data:dict, filename:str) -> None:
     with open(filename, "w") as input:
         json.dump(data, input)
 
-def _string_to_datetime(date:str) -> datetime:
+def string_to_datetime(date:str) -> datetime:
     return dateutil.parser.parse(date).replace(tzinfo=None)
+
+def domain_validator(domain:str) -> bool:
+    """Based on a regex define if a domain is valid or not
+
+    Args:
+        domain (str): [Domain name]
+
+    Returns:
+        bool: [True or False]
+    """
+
+    if validators.domain(domain):
+        return True
+        
