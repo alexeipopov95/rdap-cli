@@ -1,4 +1,5 @@
 import os
+from unicodedata import name
 import click
 from datetime import datetime
 
@@ -6,9 +7,11 @@ from rdap.utils.endpoints import RDAP_DNS
 from rdap.utils.utils import (
     datetime_to_string,
     formater,
+    get_domain_suffix,
     load_file_data,
     save_file_data,
     string_to_datetime,
+    get_domain_suffix,
 )
 from rdap.common.constants import (
     RdapDomainEvents,
@@ -24,33 +27,34 @@ PERIODS = [
 ]
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RDAP_DNS_FILENAME = "dns.json"
-
+UNDEFINED_DATA = "Undefined"
 
 class RdapApi:
     CLIENT = RdapClient()
     FILE_DIR = os.path.join(BASE_DIR, "templates", "dns")
     FILE_PATH = os.path.join(BASE_DIR, "templates", "dns", RDAP_DNS_FILENAME)
 
-    def __init__(self, domain) -> None:
-        self.domain = domain
+    @classmethod
+    def __init__(cls, domain:str) -> None:
+        cls.domain = domain
         
 
-        if not os.listdir(self.FILE_DIR):
+        if not os.listdir(cls.FILE_DIR):
             click.echo(
                 formater(
                     message="First time it could take a little longer, please wait.",
                     status=FormatterStatus.SUCCESS
                 )
             )
-            response = self.CLIENT._get(RDAP_DNS)
-            save_file_data(response, self.FILE_PATH)
+            response = cls.CLIENT._get(RDAP_DNS)
+            save_file_data(response, cls.FILE_PATH)
 
         else:
-            file_date = os.path.getmtime(self.FILE_PATH)
+            file_date = os.path.getmtime(cls.FILE_PATH)
             file_date = datetime.fromtimestamp(file_date)
 
             if (datetime.now() - file_date).days > 7:
-                response = self.CLIENT._get(RDAP_DNS)
+                response = cls.CLIENT._get(RDAP_DNS)
                 save_file_data(response, RDAP_DNS_FILENAME)
 
     @classmethod
@@ -70,7 +74,6 @@ class RdapApi:
             "url" : cls._find_url(data['services'], domain),
         }
         return context
-
 
     @classmethod
     def _find_url(cls, services:list, domain:str) -> str:
@@ -132,13 +135,26 @@ class RdapApi:
         return events
 
     @classmethod
-    def _get_client_info(cls, contex_data:dict) -> dict:
-        pass
+    def _get_owner_data(cls, contex_data:dict) -> dict:
+
+        data = {}        
+        if cls.domain.endswith(".ar"):
+            data['entity'] = "Nic Argentina"
+            data['id'] = contex_data['entities'][0]['handle']
+
+            url = contex_data['entities'][0]['links'][0]['href']
+            name = cls.CLIENT._get(url)
+            data['name'] = name['vcardArray'][1][1][-1]                
+
+        else:
+            data['entity'] = contex_data['entities'][0]['vcardArray'][1][1][-1]
+        
+        return data
 
     @classmethod
-    def get_domain_data(cls, domain:str) -> dict:
+    def get_domain_data(cls) -> dict:
 
-        context_data = cls.get_context_data(domain=domain)
+        context_data = cls.get_context_data(domain=cls.domain)
         domain_data = cls.CLIENT._get(
             url= context_data.get("url", None)
         )
@@ -150,7 +166,7 @@ class RdapApi:
                         (
                             (
                                 (
-                                    f"{domain} is not part of the RDAP protocol yet. "
+                                    "That TLD looks like it is not part of RDAP protocol yet. "
                                     "Cannot gather any information about it."
                                 )
                             )
@@ -165,7 +181,7 @@ class RdapApi:
                 formater(
                     message=(
                         (
-                            f"{domain} apparently is free to register. "
+                            f"{cls.domain} is available to register. "
                             f"For more information you can got here: {context_data.get('url')}"
                         )
                     ),
@@ -174,14 +190,19 @@ class RdapApi:
             )
 
         else:
-            # DNS WORKS
-            nameservers = cls._get_nameservers(domain_data)
+            events = cls._get_events(domain_data)
+            owner_data = cls._get_owner_data(domain_data)
 
-            # EVENTS WORKS
-            date = cls._get_events(domain_data)
-            create_at = datetime_to_string(date.get("create_date", None))
-            expire_at = datetime_to_string(date.get("expire_date", None))
-            update_at = datetime_to_string(date.get("update_date", None))
-            update_at_rdap = datetime_to_string(date.get("update_date_rdap", None))
+            data = {
+                "domain" : cls.domain,
+                "dns" : cls._get_nameservers(domain_data),
+                "create_at" : datetime_to_string(events.get("create_date")),
+                "expire_at" : datetime_to_string(events.get("expire_date")),
+                "update_at" : datetime_to_string(events.get("update_date")),
+                "update_at_rdap" : datetime_to_string(events.get("update_date_rdap")),
+                "entity" : owner_data.get("entity", UNDEFINED_DATA),
+                "id" : owner_data.get("id", UNDEFINED_DATA),
+                "name" : owner_data.get("name", UNDEFINED_DATA)
+            }
 
-
+            return data
