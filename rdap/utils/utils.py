@@ -2,7 +2,6 @@ import click
 import json
 import dateutil.parser
 import validators
-import tldextract
 from datetime import datetime
 
 from rdap.common.constants import (
@@ -62,6 +61,3 @@ def domain_validator(domain:str) -> bool:
 
     if validators.domain(domain):
         return True
-
-def get_domain_suffix(domain:str) -> str:
-    return tldextract.extract(domain).suffix

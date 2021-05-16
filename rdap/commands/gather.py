@@ -3,18 +3,15 @@ import click
 
 from rdap.utils.rdap_api import RdapApi
 from rdap.utils.utils import (
-    formater,
     domain_validator,
 )
-from rdap.common.exceptions import (
-    GatherCommandError,
+from rdap.commands.exceptions import (
     GatherEmptyParam,
     GatherInvalidDomainName
 )
 from rdap.common.constants import (
     MessageColors,
 )
-
 
 GATHER_RDAP_HELP = "The domain name. I.e 'google.com'"
 

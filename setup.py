@@ -10,7 +10,7 @@ def read_requirements() -> list:
         list: [list of libs that the CLI needs]
     """
 
-    with open("requirements.txt") as req:
+    with open("docs/requirements.txt") as req:
         content = req.read()
         requirements = content.split("\n")
 

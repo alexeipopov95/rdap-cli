@@ -1,4 +1,3 @@
-
 class DomainStatus:
     REGISTRATED = "REGISTRATED"
     AVAILABLE = "AVAILABLE"

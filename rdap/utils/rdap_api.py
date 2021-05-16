@@ -1,5 +1,4 @@
 import os
-from unicodedata import name
 import click
 from datetime import datetime
 
@@ -7,11 +6,9 @@ from rdap.utils.endpoints import RDAP_DNS
 from rdap.utils.utils import (
     datetime_to_string,
     formater,
-    get_domain_suffix,
     load_file_data,
     save_file_data,
     string_to_datetime,
-    get_domain_suffix,
 )
 from rdap.common.constants import (
     RdapDomainEvents,

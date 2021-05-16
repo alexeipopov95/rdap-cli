@@ -1,5 +1,3 @@
-
-
 class SimpleRetryStrategy:
 
     def __init__(

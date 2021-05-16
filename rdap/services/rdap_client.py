@@ -1,7 +1,4 @@
-import click
 import requests
-from rdap.utils.utils import formater
-from rdap.common.constants import FormatterStatus
 
 class RdapClient:
     """
