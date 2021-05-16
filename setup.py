@@ -1,10 +1,34 @@
 from setuptools import setup, find_packages
 
 
-INSTALL_REQUIREMENTS = ["click", "requests", "pytest"]
-PACKAGES = ["rdap"] + [
-    "rdap.{0}".format(package) for package in find_packages("rdap")
-]
+def read_requirements() -> list:
+    """simple function to read the requirements
+    file and add them as a list into the 
+    install_requires of the CLI
+
+    Returns:
+        list: [list of libs that the CLI needs]
+    """
+
+    with open("docs/requirements.txt") as req:
+        content = req.read()
+        requirements = content.split("\n")
+
+    return requirements
+
+def get_packages() -> list:
+    """simple function designed to return a list
+    of packages involved in our CLI
+
+    Returns:
+        list: [package list]
+    """
+
+    root = ["rdap"]
+    package_list = [
+        "rdap.{0}".format(package) for package in find_packages(root[0])
+    ]
+    return root + package_list
 
 
 setup(
@@ -22,26 +46,6 @@ setup(
         "data information. And for practicing."
     ),
     python_requires=">=3.6",
-    install_requires = INSTALL_REQUIREMENTS,
-    packages = PACKAGES
+    install_requires = read_requirements(),
+    packages = get_packages(),
 )
-
-"""
-setup(
-    name = "rdap",
-    version = "0.0.1",
-    author = "Alexei Popov",
-    author_email = "",
-    py_modules=['rdap'],
-    install_requires=[
-        'Click',
-        'requests',
-        'pytest'
-    ],
-    entry_points={
-        'console_scripts': [
-            'rdap = rdap.rdap:cli',
-        ],
-    },
-)
-"""
