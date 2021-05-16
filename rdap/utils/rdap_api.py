@@ -31,31 +31,37 @@ class RdapApi:
     FILE_DIR = os.path.join(BASE_DIR, "templates", "dns")
     FILE_PATH = os.path.join(BASE_DIR, "templates", "dns", RDAP_DNS_FILENAME)
 
-    @classmethod
-    def __init__(cls, domain:str) -> None:
-        cls.domain = domain
-        
 
-        if not os.listdir(cls.FILE_DIR):
+    def __init__(self, domain:str) -> None:
+        self.domain = domain
+
+        # TODO: Manage to resolve if the file does not download properly
+        if not os.listdir(self.FILE_DIR):
             click.echo(
                 formater(
-                    message="First time it could take a little longer, please wait.",
-                    status=FormatterStatus.SUCCESS
+                    message="Preparing dns data. This step repeat only once.",
+                    status=FormatterStatus.INFO
                 )
             )
-            response = cls.CLIENT._get(RDAP_DNS)
-            save_file_data(response, cls.FILE_PATH)
+            response = self.CLIENT._get(RDAP_DNS)
+            save_file_data(response, self.FILE_PATH)
+            click.echo(
+                formater(
+                    message="DONE",
+                    status=FormatterStatus.INFO
+                )
+            )
 
         else:
-            file_date = os.path.getmtime(cls.FILE_PATH)
+            file_date = os.path.getmtime(self.FILE_PATH)
             file_date = datetime.fromtimestamp(file_date)
 
             if (datetime.now() - file_date).days > 7:
-                response = cls.CLIENT._get(RDAP_DNS)
+                response = self.CLIENT._get(RDAP_DNS)
                 save_file_data(response, RDAP_DNS_FILENAME)
 
     @classmethod
-    def get_context_data(cls, domain:str) -> dict:
+    def _get_context_data(cls, domain:str) -> dict:
         """
         return a valid endpoint to query into the dns sites
         Args:
@@ -132,10 +138,10 @@ class RdapApi:
         return events
 
     @classmethod
-    def _get_owner_data(cls, contex_data:dict) -> dict:
+    def _get_owner_data(cls, contex_data:dict, domain:str) -> dict:
 
-        data = {}        
-        if cls.domain.endswith(".ar"):
+        data = {}
+        if domain.endswith(".ar"):
             data['entity'] = "Nic Argentina"
             data['id'] = contex_data['entities'][0]['handle']
 
@@ -148,15 +154,15 @@ class RdapApi:
         
         return data
 
-    @classmethod
-    def get_domain_data(cls) -> dict:
 
-        context_data = cls.get_context_data(domain=cls.domain)
-        domain_data = cls.CLIENT._get(
+    def get_domain_data(self) -> dict:
+
+        context_data = self._get_context_data(domain=self.domain)
+        domain_data = self.CLIENT._get(
             url= context_data.get("url", None)
         )
 
-        if not cls.CLIENT.VALID_URL:
+        if not self.CLIENT.VALID_URL:
             click.echo(
                 formater(
                     message=(
@@ -178,7 +184,7 @@ class RdapApi:
                 formater(
                     message=(
                         (
-                            f"{cls.domain} is available to register. "
+                            f"{self.domain} is available to register. "
                             f"For more information you can got here: {context_data.get('url')}"
                         )
                     ),
@@ -187,12 +193,12 @@ class RdapApi:
             )
 
         else:
-            events = cls._get_events(domain_data)
-            owner_data = cls._get_owner_data(domain_data)
+            events = self._get_events(domain_data)
+            owner_data = self._get_owner_data(domain_data, self.domain)
 
             data = {
-                "domain" : cls.domain,
-                "dns" : cls._get_nameservers(domain_data),
+                "domain" : self.domain,
+                "dns" : self._get_nameservers(domain_data),
                 "create_at" : datetime_to_string(events.get("create_date")),
                 "expire_at" : datetime_to_string(events.get("expire_date")),
                 "update_at" : datetime_to_string(events.get("update_date")),
