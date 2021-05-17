@@ -4,6 +4,10 @@ import dateutil.parser
 import validators
 from datetime import datetime
 
+from rdap.commands.exceptions import (
+    GatherEmptyParam,
+    GatherInvalidDomainName
+)
 from rdap.common.constants import (
     FormatterStatus,
 )
@@ -28,16 +32,21 @@ def load_file_data(filename:str) -> dict:
         data = json.load(output)
     return data
 
-def save_file_data(data:dict, filename:str) -> None:
+def save_file_data(data:dict, filename:str, _type:str="json") -> None:
     """Save data in a file
 
     Args:
         data (dict): [data to be saved]
         filename (str): [filename where data is going to be saved]
+        _type (str): [Specify the file type]
     """
 
     with open(filename, "w") as input:
-        json.dump(data, input)
+
+        if not _type == "json":
+            input.write(data)
+        else:
+            json.dump(data, input)
 
 def string_to_datetime(date:str) -> datetime:
     if date:
@@ -51,13 +60,27 @@ def datetime_to_string(date:datetime) -> str:
 
 def domain_validator(domain:str) -> bool:
     """Based on a regex define if a domain is valid or not
-
     Args:
         domain (str): [Domain name]
-
     Returns:
         bool: [True or False]
     """
 
     if validators.domain(domain):
         return True
+
+def domain_checker(domain:str) -> None:
+    """[summary]
+    Args:
+        domain (str): [description]
+    """
+
+    if not domain or domain.strip() == "":
+        raise GatherEmptyParam(
+            f"Domain was None, please provide a valid domain using --domain option"
+        )
+
+    if not domain_validator(domain):
+        raise GatherInvalidDomainName(
+            f"Domain '{domain}' is not a valid domain name."
+        )
