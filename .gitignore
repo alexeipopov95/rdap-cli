@@ -132,4 +132,4 @@ dmypy.json
 .vscode/
 
 # json files
-rdap/templates/dns/*
+dns.json
