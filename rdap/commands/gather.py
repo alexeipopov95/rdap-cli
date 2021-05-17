@@ -3,6 +3,7 @@ import click
 
 from rdap.utils.rdap_api import RdapApi
 from rdap.utils.utils import (
+    domain_checker,
     domain_validator,
 )
 from rdap.commands.exceptions import (
@@ -16,7 +17,7 @@ from rdap.common.constants import (
 GATHER_RDAP_HELP = "The domain name. I.e 'google.com'"
 
 @click.command()
-@click.option("--domain", help=GATHER_RDAP_HELP)
+@click.option("--domain", required=True, help=GATHER_RDAP_HELP)
 def gather(domain: str) -> None:
     """
     Command in charge of gathering a certain domain info
@@ -26,16 +27,7 @@ def gather(domain: str) -> None:
         domain (str): [valid domain name to being query]
     """
 
-    if not domain:
-        raise GatherEmptyParam(
-            f"Domain was {domain}, please provide a valid domain using --domain option"
-        )
-
-    if not domain_validator(domain):
-        raise GatherInvalidDomainName(
-            f"Domain '{domain}' is not a valid domain name."
-        )
-    
+    domain_checker(domain)
     rdap_api = RdapApi(domain).get_domain_data()
 
     if rdap_api:

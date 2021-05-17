@@ -32,3 +32,9 @@ class RdapDomainEvents:
     EXPIRATION = "expiration"
     LAST_CHANGED = "last changed"
     LAST_CHANGED_RDAP = "last update of RDAP database"
+
+
+class TextFormatConstants:
+    TEXT = "txt"
+    JSON = "json"
+    CSV = "csv"
