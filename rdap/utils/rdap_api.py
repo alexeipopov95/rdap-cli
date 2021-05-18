@@ -13,6 +13,7 @@ from rdap.utils.utils import (
 from rdap.common.constants import (
     RdapDomainEvents,
     FormatterStatus,
+    TextFormatConstants,
 )
 from rdap.services.rdap_client import RdapClient
 
@@ -44,7 +45,7 @@ class RdapApi:
                 )
             )
             response = self.CLIENT._get(RDAP_DNS)
-            save_file_data(response, self.FILE_PATH)
+            save_file_data(response, self.FILE_PATH, _type=TextFormatConstants.JSON)
             click.echo(
                 formater(
                     message="DONE",
@@ -58,7 +59,7 @@ class RdapApi:
 
             if (datetime.now() - file_date).days > 7:
                 response = self.CLIENT._get(RDAP_DNS)
-                save_file_data(response, RDAP_DNS_FILENAME)
+                save_file_data(response, RDAP_DNS_FILENAME, _type=TextFormatConstants.JSON)
 
     @classmethod
     def _get_context_data(cls, domain:str) -> dict:
@@ -166,14 +167,8 @@ class RdapApi:
             click.echo(
                 formater(
                     message=(
-                        (
-                            (
-                                (
-                                    "That TLD looks like it is not part of RDAP protocol yet. "
-                                    "Cannot gather any information about it."
-                                )
-                            )
-                        )
+                        "That TLD looks like it is not part of RDAP protocol yet. "
+                        "Cannot gather any information about it."
                     ),
                     status=FormatterStatus.ERROR
                 )
@@ -183,10 +178,8 @@ class RdapApi:
             click.echo(
                 formater(
                     message=(
-                        (
-                            f"{self.domain} is available to register. "
-                            f"For more information you can got here: {context_data.get('url')}"
-                        )
+                        f"{self.domain} is available to register. "
+                        f"For more information you can got here: {context_data.get('url')}"
                     ),
                     status=FormatterStatus.INFO
                 )
@@ -198,11 +191,11 @@ class RdapApi:
 
             data = {
                 "domain" : self.domain,
-                "dns" : self._get_nameservers(domain_data),
-                "create_at" : datetime_to_string(events.get("create_date")),
-                "expire_at" : datetime_to_string(events.get("expire_date")),
-                "update_at" : datetime_to_string(events.get("update_date")),
-                "update_at_rdap" : datetime_to_string(events.get("update_date_rdap")),
+                "dns" : self._get_nameservers(domain_data) or UNDEFINED_DATA,
+                "create_at" : datetime_to_string(events.get("create_date")) or UNDEFINED_DATA,
+                "expire_at" : datetime_to_string(events.get("expire_date")) or UNDEFINED_DATA,
+                "update_at" : datetime_to_string(events.get("update_date")) or UNDEFINED_DATA,
+                "update_at_rdap" : datetime_to_string(events.get("update_date_rdap")) or UNDEFINED_DATA,
                 "entity" : owner_data.get("entity", UNDEFINED_DATA),
                 "id" : owner_data.get("id", UNDEFINED_DATA),
                 "name" : owner_data.get("name", UNDEFINED_DATA)

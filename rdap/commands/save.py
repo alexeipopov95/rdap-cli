@@ -1,4 +1,5 @@
 import os
+from typing import Text
 import click
 from rdap.utils.rdap_api import RdapApi
 from rdap.common.constants import FormatterStatus
@@ -8,7 +9,6 @@ from rdap.utils.utils import (
     save_file_data
 ) 
 from rdap.common.constants import TextFormatConstants
-
 
 
 SAVE_RDAP_HELP_DOMAIN = (
@@ -29,8 +29,8 @@ AVAILABLE_EXTENCION = (
 
 
 @click.command()
-@click.option("--domain", required=True, help=SAVE_RDAP_HELP_DOMAIN)
-@click.option("--file", required=True, help=SAVE_RDAP_HELP_FILE)
+@click.option("-d", "--domain", required=True, help=SAVE_RDAP_HELP_DOMAIN)
+@click.option("-f", "--file", required=True, help=SAVE_RDAP_HELP_FILE)
 def save(domain:str, file:str) -> click.echo:
     """Save the desired data about the domain in a specified file
     Args:
@@ -59,17 +59,38 @@ def save(domain:str, file:str) -> click.echo:
         domain_data = rdap_api.get_domain_data()
 
         if file.endswith(TextFormatConstants.JSON):
-            #save_file_data(domain_data, file, _type=TextFormatConstants.JSON)
+            save_file_data(domain_data, file, _type=TextFormatConstants.JSON)
+
             click.echo(
-                formater(message="Saved at {0}".format(get_save_location(file)), status=FormatterStatus.SUCCESS)
+                formater(message="Saved [{0}] {1}".format(
+                    TextFormatConstants.JSON,
+                    get_save_location(file)),
+                    status=FormatterStatus.SUCCESS
+                )
             )
-            
+
         elif file.endswith(TextFormatConstants.TEXT):
             data = convert_into_txt(domain_data)
-
             save_file_data(data, file, _type=TextFormatConstants.TEXT)
+
             click.echo(
-                formater(message="Saved at {0}".format(get_save_location(file)), status=FormatterStatus.SUCCESS)
+                formater(message="Saved [{0}] {1}".format(
+                    TextFormatConstants.TEXT,
+                    get_save_location(file)),
+                    status=FormatterStatus.SUCCESS
+                )
+            )
+
+        elif file.endswith(TextFormatConstants.YML):
+            data = convert_into_yml(domain_data)
+            save_file_data(data, file, _type=TextFormatConstants.YML)
+
+            click.echo(
+                formater(message="Saved [{0}] {1}".format(
+                    TextFormatConstants.YML,
+                    get_save_location(file)),
+                    status=FormatterStatus.SUCCESS
+                )
             )
 
 def convert_into_txt(data:dict) -> str:
@@ -89,6 +110,9 @@ def convert_into_txt(data:dict) -> str:
     _text = "".join(tmp)
 
     return _text
+
+def convert_into_yml(data:dict) -> str:
+    pass
 
 def get_save_location(file_string:str) -> str:
     return f"{os.getcwd()}/{file_string}"

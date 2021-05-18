@@ -2,6 +2,7 @@ import click
 import json
 import dateutil.parser
 import validators
+import tldextract
 from datetime import datetime
 
 from rdap.commands.exceptions import (
@@ -10,6 +11,7 @@ from rdap.commands.exceptions import (
 )
 from rdap.common.constants import (
     FormatterStatus,
+    TextFormatConstants,
 )
 
 
@@ -32,7 +34,7 @@ def load_file_data(filename:str) -> dict:
         data = json.load(output)
     return data
 
-def save_file_data(data:dict, filename:str, _type:str="json") -> None:
+def save_file_data(data:dict, filename:str, _type:str) -> None:
     """Save data in a file
 
     Args:
@@ -43,10 +45,12 @@ def save_file_data(data:dict, filename:str, _type:str="json") -> None:
 
     with open(filename, "w") as input:
 
-        if not _type == "json":
-            input.write(data)
-        else:
+        if _type == TextFormatConstants.JSON:
             json.dump(data, input)
+        elif _type == TextFormatConstants.YML:
+            pass 
+        else:
+            input.write(data)
 
 def string_to_datetime(date:str) -> datetime:
     if date:
@@ -69,18 +73,29 @@ def domain_validator(domain:str) -> bool:
     if validators.domain(domain):
         return True
 
+def domain_cleaner(domain:str) -> str:
+
+    extract = tldextract.extract(domain)
+    if extract.subdomain:
+        domain = domain.replace(f"{extract.subdomain}.", "")    
+
+    if "http" in domain:
+        domain = domain.split("://")[1]
+
+    return domain
+
 def domain_checker(domain:str) -> None:
-    """[summary]
-    Args:
-        domain (str): [description]
-    """
 
     if not domain or domain.strip() == "":
         raise GatherEmptyParam(
             f"Domain was None, please provide a valid domain using --domain option"
         )
 
+    domain = domain_cleaner(domain)
+
     if not domain_validator(domain):
         raise GatherInvalidDomainName(
             f"Domain '{domain}' is not a valid domain name."
         )
+    
+    return domain
