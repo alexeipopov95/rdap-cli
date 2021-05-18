@@ -33,7 +33,7 @@ def get_packages() -> list:
 
 setup(
     name = "rdap",
-    version = "0.0.1",
+    version = "0.0.2",
     author = "Alexei Popov",
     author_email = "",
     entry_points = {

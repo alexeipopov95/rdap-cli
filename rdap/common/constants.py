@@ -38,3 +38,4 @@ class TextFormatConstants:
     TEXT = "txt"
     JSON = "json"
     CSV = "csv"
+    YML = "yml"
