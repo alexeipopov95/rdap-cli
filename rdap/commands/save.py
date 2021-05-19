@@ -4,7 +4,7 @@ import click
 from rdap.utils.rdap_api import RdapApi
 from rdap.common.constants import FormatterStatus
 from rdap.utils.utils import (
-    domain_checker,
+    domain_parser,
     formater,
     save_file_data
 ) 
@@ -32,13 +32,7 @@ AVAILABLE_EXTENCION = (
 @click.option("-d", "--domain", required=True, help=SAVE_RDAP_HELP_DOMAIN)
 @click.option("-f", "--file", required=True, help=SAVE_RDAP_HELP_FILE)
 def save(domain:str, file:str) -> click.echo:
-    """Save the desired data about the domain in a specified file
-    Args:
-        domain (str): [description]
-        file (str): [description]
-    Returns:
-        click.echo: [description]
-    """
+    """ Save the information obtained in a specific file. """
 
     if not file.endswith(AVAILABLE_EXTENCION):
         availables = ", ".join(AVAILABLE_EXTENCION)
@@ -53,7 +47,7 @@ def save(domain:str, file:str) -> click.echo:
         )
 
     else:
-        domain_checker(domain)
+        domain_parser(domain)
 
         rdap_api = RdapApi(domain)
         domain_data = rdap_api.get_domain_data()
