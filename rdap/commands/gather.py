@@ -3,7 +3,7 @@ import click
 
 from rdap.utils.rdap_api import RdapApi
 from rdap.utils.utils import (
-    domain_checker,
+    domain_parser,
 )
 from rdap.common.constants import (
     MessageColors,
@@ -14,15 +14,9 @@ GATHER_RDAP_HELP = "The domain name. I.e 'google.com'"
 @click.command()
 @click.option("-d", "--domain", required=True, help=GATHER_RDAP_HELP)
 def gather(domain: str) -> None:
-    """
-    Command in charge of gathering a certain domain info
-    and just show it as an console output in a human readable form
+    """ Gather the domain data, dns, events, owner, entity. """
 
-    Args:
-        domain (str): [valid domain name to being query]
-    """
-
-    domain = domain_checker(domain)
+    domain = domain_parser(domain)
     rdap_api = RdapApi(domain).get_domain_data()
 
     if rdap_api:

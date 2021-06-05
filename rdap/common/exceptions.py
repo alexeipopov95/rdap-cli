@@ -1,0 +1,33 @@
+class SaveCommandError(Exception):
+    pass
+
+
+class NotSupportedFormat(SaveCommandError):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
+
+
+class ParserError(Exception):
+    pass
+
+
+class InvalidDomainInput(ParserError):
+    def __init__(self, msg):
+        super().__init__(msg)
+
+
+
+class FileReadError(Exception):
+    pass
+
+
+class ImproperlyConfiguredFile(FileReadError):
+    def __init__(self, msg):
+        super().__init__(msg)
+
+
+class EmptyFileError(FileReadError):
+    def __init__(self, msg):
+        super().__init__(msg)
