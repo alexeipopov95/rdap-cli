@@ -25,17 +25,17 @@ CHECK_RDAP_HELP_FILE = ""
 def check(**kwargs) -> None:
     """ Check if the domain is available or not. """
     domain = kwargs.get("domain")
-    file = kwargs.get("file")
+    file = kwargs.get("file", None)
     sleep = kwargs.get("sleep")
 
     if domain:
         domain = domain_parser(domain)
-        is_available = RdapApi(domain).get_domain_data()
+        not_available = RdapApi(domain).get_domain_data()
 
-        if is_available:
+        if not_available:
             click.echo(
                 formater(
-                    f"{domain.upper()} it is not available.",
+                    f"{domain} it is not available.",
                     status=FormatterStatus.ERROR
                 )
             )
@@ -45,11 +45,11 @@ def check(**kwargs) -> None:
 
         for domain in file:
             try:
-                is_available = RdapApi(domain).get_domain_data()
-                if is_available:
+                not_available = RdapApi(domain).get_domain_data()
+                if not_available:
                     click.echo(
                         formater(
-                            f"{domain.upper()} it is not available.",
+                            f"{domain} it is not available.",
                             status=FormatterStatus.ERROR
                         )
                     )
@@ -57,3 +57,14 @@ def check(**kwargs) -> None:
                 print(ex)
 
             time.sleep(sleep)
+    else:
+        valid_options = ", ".join([f"--{opt}" for opt in kwargs]) 
+        click.echo(
+            formater(
+                message=(
+                    "You have to pass a valid option. "
+                    "This are the valid options: "
+                    f"{valid_options}"
+                ), status=FormatterStatus.ERROR
+            )
+        )
