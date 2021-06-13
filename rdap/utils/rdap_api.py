@@ -25,7 +25,29 @@ PERIODS = [
 ]
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RDAP_DNS_FILENAME = "dns.json"
+CACHE_FILE_NAME = "cache.json"
 UNDEFINED_DATA = "Undefined"
+
+
+def save_history(method): # esta es la funcion principal
+    def inner(cls):
+        CACHE_FILE_DIR = os.path.join(BASE_DIR, "templates", "history")
+        CACHE_FILE_PATH = os.path.join(BASE_DIR, "templates", "history", CACHE_FILE_NAME)
+
+        if not os.listdir(CACHE_FILE_DIR):
+            save_file_data(
+                [],
+                CACHE_FILE_PATH,
+                TextFormatConstants.JSON
+            )
+
+        output = load_file_data(CACHE_FILE_PATH)
+        output.append(method(cls))
+        save_file_data(output, CACHE_FILE_PATH, TextFormatConstants.JSON)
+
+
+        return method(cls)
+    return inner
 
 class RdapApi:
     CLIENT = RdapClient()
@@ -40,7 +62,7 @@ class RdapApi:
         if not os.listdir(self.FILE_DIR):
             click.echo(
                 formater(
-                    message="Preparing dns data. This step repeat only once.",
+                    message="Preparing dns data. This step happen only once.",
                     status=FormatterStatus.INFO
                 )
             )
@@ -155,7 +177,7 @@ class RdapApi:
         
         return data
 
-
+    @save_history
     def get_domain_data(self) -> dict:
 
         context_data = self._get_context_data(domain=self.domain)

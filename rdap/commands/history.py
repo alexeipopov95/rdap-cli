@@ -12,5 +12,6 @@ HISTORY_RDAP_DETAIL = (
 @click.option("--detail", "detail_id", help=HISTORY_RDAP_DETAIL)
 def history(detail_id:str) -> click.echo:
     """ Return a history of the last searches. """
+
     
     
