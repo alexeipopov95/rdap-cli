@@ -4,7 +4,7 @@ from rdap.common.constants import (
     MessageColors,
 )
 
-
+# TODO Dont forget to make a strong domain validation
 @click.command()
 @click.argument("domain", nargs=1)
 def gather(domain: str) -> None:
