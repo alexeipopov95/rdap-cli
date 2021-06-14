@@ -12,7 +12,7 @@ This program is in charge of collecting all the relevant information related to 
 ## Utils
 *Json TLD file:  [Json File](https://data.iana.org/rdap/dns.json)* \
 *Rdap deployment:  [DATA](https://deployment.rdap.org/)* \
-*Context format: [format](docs/outputs.md)
+*Context format: [format](docs/outputs.md)*
 
 ## Requirements
 Already exist a file called requirements.txt but for practical uses we are going to mention here too.

@@ -161,7 +161,7 @@ class RdapApi:
                 data['id'] = contex_data['entities'][0]['handle']
 
                 url = contex_data['entities'][0]['links'][0]['href']
-                name = cls.CLIENT.get(url)
+                name = cls.CLIENT.get(url).get("content")
                 data['name'] = name['vcardArray'][1][1][-1]                
 
             else:

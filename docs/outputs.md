@@ -4,7 +4,7 @@ This is a simple file that shows the format on how the context is formed
 ## Invalid for RDAP Protocol.
 
     {
-        "is_rdap" : False, *
+        "is_rdap" : False,
         "is_available" : False,
         "host" : None,
         "content" : {
