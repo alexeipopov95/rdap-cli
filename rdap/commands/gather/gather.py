@@ -1,5 +1,6 @@
 import click
 from rdap.services.rdap import RdapApi
+from rdap.commands.gather.utils import domain_validator
 from rdap.common.constants import (
     MessageColors,
 )
@@ -12,10 +13,7 @@ def gather(domain: str) -> None:
     Give a valid domain name. In example: 'google.com', 'mydomain.net', etc.
     """
 
-    """
-    STRONG DOMAIN VALIDATION
-    """
-
+    domain_validator(domain)
     schema = RdapApi(domain).query()
 
     if schema.get("is_available"):

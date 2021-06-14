@@ -7,15 +7,6 @@ class NotSupportedFormat(SaveCommandError):
         super().__init__(*args, **kwargs)
 
 
-class ParserError(Exception):
-    pass
-
-
-class InvalidDomainInput(ParserError):
-    def __init__(self, msg):
-        super().__init__(msg)
-
-
 class FileReadError(Exception):
     pass
 

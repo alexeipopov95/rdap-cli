@@ -2,15 +2,12 @@ import os
 import click
 import json
 import dateutil.parser
-import validators
-import tldextract
 from datetime import datetime
 from typing import Callable
 
 from rdap.common.exceptions import (
     EmptyFileError,
     ImproperlyConfiguredFile,
-    InvalidDomainInput,
     NotSupportedFormat,
 )
 from rdap.common.constants import (
@@ -51,29 +48,6 @@ FILE_PARSER_MAP = {
     #TextFormatConstants.YML : _yml_file_parser,
 }
 
-
-def _clean_www(domain:str) -> str:
-    if "www" in domain:
-        return domain.replace("www.","")
-    return domain
-
-def _clean_subdomain(domain:str) -> str:
-    extracted = tldextract.extract(domain)
-    if extracted.subdomain:
-        return domain.replace(f"{extracted.subdomain}.", "")
-    return domain
-
-def _clean_http(domain:str) -> str:
-    if "http" in domain:
-        return domain.split("://",1)[1]
-    return domain
-
-def _is_valid_domain(domain:str) -> None:
-    if not validators.domain(domain):
-        raise InvalidDomainInput(
-            f"Domain '{domain}' is not a valid domain name."
-        )
-    return domain
 
 def _is_empty_file(filename:str) -> None:
     if os.stat(filename).st_size == 0:
@@ -140,19 +114,7 @@ def datetime_to_string(date:datetime) -> str:
         return date.strftime("%Y-%m-%d %H:%M:%S")
     return date
 
-def domain_parser(domain:str) -> None:
 
-    if not domain or domain.strip() == "":
-        raise InvalidDomainInput(
-            f"Domain was None, please provide a valid domain using --domain option"
-        )
-    
-    domain = _clean_http(domain)
-    domain = _clean_www(domain)
-    domain = _clean_subdomain(domain)
-    domain = _is_valid_domain(domain)
-    
-    return domain
 
 def file_parser(file:str) -> Callable:
     _, extension = file.split(".", 1)
