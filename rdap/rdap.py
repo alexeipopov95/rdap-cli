@@ -1,5 +1,5 @@
+from rdap.commands.gather import gather
 import click
-from rdap.services.rdap import RdapApi
 
 COMMAND_LIST = [
     "gather",
@@ -8,21 +8,11 @@ COMMAND_LIST = [
 ]
 
 
-@click.command()
-@click.option(
-    "--domain",
-)
-
-def mi_test(domain):
-    api = RdapApi(domain)
-    a = api.query()
-
-
 @click.group()
 def cli() -> None:
     pass
 
-cli.add_command(mi_test)
+cli.add_command(gather)
 
 if __name__ == "__main__":
     cli()

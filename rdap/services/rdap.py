@@ -1,4 +1,5 @@
 import os
+import uuid
 from datetime import datetime
 from rdap.common.endpoints import RDAP_DNS
 from rdap.services.rdap_client import RdapClient
@@ -25,6 +26,7 @@ def save_history(method):
         CACHE_FILE_PATH = os.path.join(
             BASE_DIR, "rdap", "cache", "history", RDAP_CACHE_FILENAME
         )
+        data = method(cls)
 
         if not os.path.isfile(CACHE_FILE_PATH):
             save_file_data(
@@ -33,9 +35,15 @@ def save_history(method):
                 TextFormatConstants.JSON
             )
 
+        data["id"] = str(uuid.uuid4())
         output = load_file_data(CACHE_FILE_PATH)
-        output.append(method(cls))
-        save_file_data(output, CACHE_FILE_PATH, TextFormatConstants.JSON)
+        output.append(data)
+
+        save_file_data(
+            output,
+            CACHE_FILE_PATH,
+            TextFormatConstants.JSON
+        )
     
         return method(cls)
     return save
