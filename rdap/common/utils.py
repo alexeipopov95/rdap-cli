@@ -2,8 +2,8 @@ import os
 import click
 import json
 import dateutil.parser
+import tldextract
 from datetime import datetime
-from typing import Callable
 
 from rdap.common.exceptions import (
     EmptyFileError,
@@ -116,7 +116,7 @@ def datetime_to_string(date:datetime) -> str:
 
 
 
-def file_parser(file:str) -> Callable:
+def file_parser(file:str):
     _, extension = file.split(".", 1)
 
     if not extension in AVAILABLE_EXTENCION:
@@ -126,3 +126,22 @@ def file_parser(file:str) -> Callable:
 
     maped_file = FILE_PARSER_MAP.get(extension)
     return maped_file(file)
+
+
+def get_subdomain(domain:str) -> str:
+    try:
+        return tldextract.extract(domain).subdomain
+    except TypeError:
+        return ''
+
+def get_domain(domain:str) -> str:
+    try:
+        return tldextract.extract(domain).domain
+    except TypeError:
+        return ''
+
+def get_suffix(domain:str) -> str:
+    try:
+        return tldextract.extract(domain).suffix
+    except TypeError:
+        return ''

@@ -1,20 +1,15 @@
-import tldextract
 import validators
 from .exceptions import (
     DomainWithSubdomain,
     DomainValidationError,
     DomainWithHttp,
 )
+from rdap.common.utils import (
+    get_suffix,
+    get_domain,
+    get_subdomain,
+)
 
-
-def get_subdomain(domain:str) -> str:
-    return tldextract.extract(domain).subdomain
-
-def get_domain(domain:str) -> str:
-    return tldextract.extract(domain).domain
-
-def get_suffix(domain:str) -> str:
-    return tldextract.extract(domain).suffix
 
 def _has_subdomain(domain:str) -> None:
     subdomain = get_subdomain(domain)

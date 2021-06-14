@@ -3,6 +3,7 @@ from rdap.services.rdap import RdapApi
 from rdap.commands.gather.utils import domain_validator
 from rdap.common.constants import (
     MessageColors,
+    DomainAvailability
 )
 
 # TODO Dont forget to make a strong domain validation
@@ -17,9 +18,21 @@ def gather(domain: str) -> None:
     schema = RdapApi(domain).query()
 
     if schema.get("is_available"):
-        is_available = click.style("YES", fg=MessageColors.GREEN, bold=True)
+        is_available = click.style(
+            DomainAvailability.AVAILABLE,
+            fg=DomainAvailability.availability_color_map.get(
+                DomainAvailability.AVAILABLE
+            ),
+            bold=True
+        )
     else:
-        is_available = click.style("NO", fg=MessageColors.RED, bold=True)
+        is_available = click.style(
+            DomainAvailability.UNAVAILABLE,
+            fg=DomainAvailability.availability_color_map.get(
+                DomainAvailability.UNAVAILABLE
+            ),
+            bold=True
+        )
     
     schema = schema["content"]
     dns = " \n\t\t    ".join(schema.get("dns").split(","))
@@ -27,7 +40,7 @@ def gather(domain: str) -> None:
         Domain: {
             click.style(schema.get("domain").upper(), fg=MessageColors.WHITE, bold=True)
         }
-        Available: {is_available}
+        Status: {is_available}
 
         Nameservers: {
             click.style(dns, fg=MessageColors.WHITE, bold=True)

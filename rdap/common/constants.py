@@ -39,3 +39,12 @@ class TextFormatConstants:
     JSON = "json"
     CSV = "csv"
     YML = "yml"
+
+class DomainAvailability:
+    AVAILABLE = "AVAILABLE"
+    UNAVAILABLE = "UNAVAILABLE"
+
+    availability_color_map = {
+        AVAILABLE : MessageColors.GREEN,
+        UNAVAILABLE : MessageColors.RED
+    }
