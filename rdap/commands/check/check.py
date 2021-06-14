@@ -1,7 +1,5 @@
 import click
 import time
-from rdap.utils.rdap_api import RdapApi
-from rdap.utils.utils import domain_parser, file_parser, formater
 from rdap.common.constants import FormatterStatus
 
 

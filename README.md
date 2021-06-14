@@ -11,7 +11,8 @@ This program is in charge of collecting all the relevant information related to 
 
 ## Utils
 *Json TLD file:  [Json File](https://data.iana.org/rdap/dns.json)* \
-*Rdap deployment:  [DATA](https://deployment.rdap.org/)*
+*Rdap deployment:  [DATA](https://deployment.rdap.org/)* \
+*Context format: [format](docs/outputs.md)
 
 ## Requirements
 Already exist a file called requirements.txt but for practical uses we are going to mention here too.
@@ -24,6 +25,8 @@ Already exist a file called requirements.txt but for practical uses we are going
 |Requests|2.22.0|pip install requests|[DOCS](https://docs.python-requests.org/en/master/)|[PyPI](https://pypi.org/project/requests/)|
 |Tldextract|3.1.0|pip install tldextract|[DOCS](https://github.com/john-kurkowski/tldextract)|[PyPI](https://pypi.org/project/tldextract/)|
 |Validators|0.18.2|pip install validators|[DOCS](https://github.com/kvesteri/validators)|[PyPI](https://pypi.org/project/validators/)|
+|PyYAML|5.4.1|pip install PyYAML|[DOCS](https://pyyaml.org/wiki/PyYAMLDocumentation)|[PyPI](https://pypi.org/project/PyYAML/)|
+|Tabulate|0.8.9|pip install tabulate|[DOCS](https://github.com/astanin/python-tabulate)|[PyPI](https://pypi.org/project/tabulate/)|
 
 
 ## Features
@@ -36,5 +39,3 @@ Already exist a file called requirements.txt but for practical uses we are going
 
 ## Guide
 You can check the tutorial [HERE](docs/user_guide.md)
-
-
