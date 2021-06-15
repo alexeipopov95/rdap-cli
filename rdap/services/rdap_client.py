@@ -18,12 +18,12 @@ class RdapClient:
         # TODO I have to implement a retry policy and strategy.
         if response.status_code == 404:
             context = {
-                "is_available" : True,
+                "status" : True,
                 "content" : {},
             }
         else:
             context = {
-                "is_available" : False,
+                "status" : False,
                 "content" : response.json(),
             }
 
