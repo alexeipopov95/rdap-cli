@@ -6,7 +6,7 @@ import tldextract
 from datetime import datetime
 
 from rdap.common.exceptions import (
-    EmptyFileError,
+    FileDoesNotExist,
     ImproperlyConfiguredFile,
     NotSupportedFormat,
 )
@@ -49,12 +49,6 @@ FILE_PARSER_MAP = {
 }
 
 
-def _is_empty_file(filename:str) -> None:
-    if os.stat(filename).st_size == 0:
-        raise EmptyFileError(
-            f"{filename} is empty"
-        )
-
 def formater(message:str, status:str) -> click.style:
     status_color = FormatterStatus.formater_color_map.get(status, "INFO")
     return click.style(
@@ -70,7 +64,11 @@ def load_file_data(filename:str) -> dict:
         dict: [return a dict object]
     """
 
-    _is_empty_file(filename)
+    if not os.path.isfile(filename):
+        raise FileDoesNotExist(
+            "The file you are trying to access does not exist yet."
+        )
+
 
     with open(filename, "r") as output:
         if filename.endswith(TextFormatConstants.JSON):
@@ -111,10 +109,8 @@ def string_to_datetime(date:str) -> datetime:
 
 def datetime_to_string(date:datetime) -> str:
     if date:
-        return date.strftime("%Y-%m-%d %H:%M:%S")
+        return date.strftime("%Y-%m-%d %H:%M")
     return date
-
-
 
 def file_parser(file:str):
     _, extension = file.split(".", 1)
@@ -126,7 +122,6 @@ def file_parser(file:str):
 
     maped_file = FILE_PARSER_MAP.get(extension)
     return maped_file(file)
-
 
 def get_subdomain(domain:str) -> str:
     try:
@@ -145,3 +140,11 @@ def get_suffix(domain:str) -> str:
         return tldextract.extract(domain).suffix
     except TypeError:
         return ''
+
+def form_hostname(data:dict) -> str:
+    domain = get_domain(data)
+    suffix = get_suffix(data)
+
+    if domain != '' and suffix != '':
+        return "https://{0}.{1}/".format(domain, suffix)
+    return " - "

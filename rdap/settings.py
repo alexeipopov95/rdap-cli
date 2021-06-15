@@ -10,3 +10,4 @@ UNDEFINED_DATA = "Undefined" # Name of the variable to show if some data is not 
 
 # Files
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) # Base dir of the project
+CACHE_FILE_PATH = os.path.join(BASE_DIR, "rdap", "cache", "history", RDAP_CACHE_FILENAME)

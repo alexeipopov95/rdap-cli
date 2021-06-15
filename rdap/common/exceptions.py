@@ -16,6 +16,6 @@ class ImproperlyConfiguredFile(FileReadError):
         super().__init__(msg)
 
 
-class EmptyFileError(FileReadError):
+class FileDoesNotExist(FileReadError):
     def __init__(self, msg):
         super().__init__(msg)

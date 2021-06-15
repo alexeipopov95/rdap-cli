@@ -8,6 +8,7 @@ from rdap.common.utils import (
     save_file_data,
     string_to_datetime,
     datetime_to_string,
+    form_hostname,
 )
 from rdap.common.constants import (
     RdapDomainEvents,
@@ -16,16 +17,13 @@ from rdap.common.constants import (
 from rdap.settings import (
     BASE_DIR,
     RDAP_DNS_FILENAME,
-    RDAP_CACHE_FILENAME,
     UNDEFINED_DATA,
+    CACHE_FILE_PATH
 )
 
 # TODO docstrings
 def save_history(method):
     def save(cls):
-        CACHE_FILE_PATH = os.path.join(
-            BASE_DIR, "rdap", "cache", "history", RDAP_CACHE_FILENAME
-        )
         data = method(cls)
 
         if not os.path.isfile(CACHE_FILE_PATH):
@@ -36,6 +34,7 @@ def save_history(method):
             )
 
         data["id"] = str(uuid.uuid4())
+        data["timestamp"] = datetime_to_string(datetime.now())
         output = load_file_data(CACHE_FILE_PATH)
         output.append(data)
 
@@ -97,8 +96,9 @@ class RdapApi:
 
         schema = {
             "is_rdap" : cls.IS_PART_OF_RDAP_PROTOCOL,
-            "is_available" : False,
-            "host" : cls.DOMAIN_HOST,
+            "status" : False,
+            "query_host" : cls.DOMAIN_HOST,
+            "host" : form_hostname(cls.DOMAIN_HOST),
             "content" : {
                 "domain" : domain,
                 "dns" : UNDEFINED_DATA,
@@ -189,8 +189,8 @@ class RdapApi:
             return schema
 
         context = self._get_context()
-        if context.get("is_available"):
-            schema["is_available"] = True
+        if context.get("status"):
+            schema["status"] = True
             return schema
 
         dates = self._get_events(context.get("content"))

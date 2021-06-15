@@ -17,7 +17,7 @@ def gather(domain: str) -> None:
     domain_validator(domain)
     schema = RdapApi(domain).query()
 
-    if schema.get("is_available"):
+    if schema.get("status"):
         is_available = click.style(
             DomainAvailability.AVAILABLE,
             fg=DomainAvailability.availability_color_map.get(
