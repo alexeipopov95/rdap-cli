@@ -13,6 +13,8 @@ from rdap.common.exceptions import (
 from rdap.common.constants import (
     FormatterStatus,
     TextFormatConstants,
+    MessageColors,
+    DomainAvailability,
 )
 
 AVAILABLE_EXTENCION = (
@@ -148,3 +150,60 @@ def form_hostname(data:dict) -> str:
     if domain != '' and suffix != '':
         return "https://{0}.{1}/".format(domain, suffix)
     return " - "
+
+
+def format_domain_output(data:dict) -> str:
+
+    if data.get("status"):
+        is_available = click.style(
+            DomainAvailability.AVAILABLE,
+            fg=DomainAvailability.availability_color_map.get(
+                DomainAvailability.AVAILABLE
+            ),
+            bold=True
+        )
+    else:
+        is_available = click.style(
+            DomainAvailability.UNAVAILABLE,
+            fg=DomainAvailability.availability_color_map.get(
+                DomainAvailability.UNAVAILABLE
+            ),
+            bold=True
+        )
+    
+    data = data["content"]
+    dns = " \n\t\t    ".join(data.get("dns").split(","))
+    message = f"""
+        Domain: {
+            click.style(data.get("domain").upper(), fg=MessageColors.WHITE, bold=True)
+        }
+        Status: {is_available}
+
+        Nameservers: {
+            click.style(dns, fg=MessageColors.WHITE, bold=True)
+        }
+
+        Create date: {
+            click.style(data.get("create_at"), fg=MessageColors.WHITE, bold=True)
+        }
+        Expire date: {
+            click.style(data.get("expire_at"), fg=MessageColors.WHITE, bold=True)
+        }
+        Update date: {
+            click.style(data.get("update_at"), fg=MessageColors.WHITE, bold=True)
+        }
+        Update date (RDAP): {
+            click.style(data.get("updata_at_rdap"), fg=MessageColors.WHITE, bold=True)
+        }
+
+        Entity: {
+            click.style(data.get("entity"), fg=MessageColors.WHITE, bold=True)
+        }
+        Name: {
+            click.style(data.get("name"), fg=MessageColors.WHITE, bold=True)
+        }
+        Registrant ID: {
+            click.style(data.get("registrant_id"), fg=MessageColors.WHITE, bold=True)
+        }
+    """
+    return message

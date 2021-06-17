@@ -12,7 +12,6 @@ from rdap.settings import (
 from rdap.common.exceptions import (
     FileDoesNotExist,
 )
-from rdap.common.utils import form_hostname
 
 # TODO: Docstrings
 def decorate(key, value):
@@ -74,4 +73,10 @@ def generate_table():
     )
 
 
+def get_record(id): # DOC STRINGS
+
+    _history = load_file_data(CACHE_FILE_PATH)
+    for record in _history:
+        if str(id) == str(record["id"]):
+            return record
 
