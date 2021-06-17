@@ -12,11 +12,13 @@ from rdap.settings import (
 
 # TODO: Docstrings
 def decorate(key, value):
+
     if isinstance(value, bool) and key == "status":
         if value:
             value = click.style("Available", fg=MessageColors.GREEN , bold=True)
         else:
             value = click.style("Taken", fg=MessageColors.RED, bold=True)
+
     elif isinstance(value, bool):
         if value:
             value = click.style("Yes", fg=MessageColors.GREEN , bold=True)

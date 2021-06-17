@@ -1,6 +1,5 @@
 import os
 
-
 # General Settings
 DNS_FILE_CHECK_INTERVAL = 7 # Number of days to evaluate until check again the dns file
 RDAP_CACHE_FILENAME = "cache.json" # Name of the file where the history is going to be saved

@@ -103,7 +103,8 @@ def save_file_data(data:dict, filename:str, _type:str) -> None:
             json.dump(data, input)
         elif _type == TextFormatConstants.YML:
             pass 
-        else:
+        elif _type == TextFormatConstants.TEXT:
+            data = convert_dict_into_txt(data)
             input.write(data)
 
 
@@ -222,3 +223,15 @@ def format_domain_output(data:dict) -> str:
         }
     """
     return message
+
+def convert_dict_into_txt(data:dict) -> str:
+
+    line = ""
+    for key, value in data.items():
+
+        if isinstance(value, dict):
+            line += convert_dict_into_txt(value)
+        else:
+            line += f"{key}: {value}\n"
+
+    return line

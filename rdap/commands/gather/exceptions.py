@@ -1,10 +1,7 @@
-from os import error
-
-
 class DomainValidationError(Exception):
+
     def __init__(self, message):
         super().__init__(message)
-        
 
 
 class DomainWithSubdomain(DomainValidationError):
@@ -16,4 +13,14 @@ class DomainWithHttp(DomainValidationError):
 
 
 class DomainRegexDoesNotMatch(DomainValidationError):
+    pass
+
+
+class FileError(Exception):
+
+    def __init__(self, message):
+        super().__init__(message)
+
+
+class NotSupportedFileFormat(FileError):
     pass

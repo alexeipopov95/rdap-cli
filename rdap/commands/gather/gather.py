@@ -8,11 +8,23 @@ from rdap.commands.gather.exceptions import (
     DomainWithHttp,
     DomainValidationError,
 )
+from rdap.commands.gather.options import (
+    Save,
+)
 
 # TODO Dont forget to make a strong domain validation
 @click.command()
 @click.argument("domain", nargs=1)
-def gather(domain: str) -> None:
+@click.option(
+    "-s",
+    "--save",
+    "filename",
+    help=(
+        "Give a file format and the result is going to be saved there. "
+        "I.e 'my_file.json' or 'my_file.txt'"
+    )
+)
+def gather(domain: str, filename:str) -> None:
     """ Gather the domain information and prints in the shell.
     Give a valid domain name. In example: 'google.com', 'mydomain.net', etc.
     """
@@ -33,6 +45,10 @@ def gather(domain: str) -> None:
     )
 
     schema = RdapApi(domain).query()
+
+    if filename:
+        return Save().save_harvest(filename, schema)
+
     message = format_domain_output(schema)
 
     click.echo(
