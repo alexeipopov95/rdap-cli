@@ -98,7 +98,7 @@ class RdapApi:
             "is_rdap" : cls.IS_PART_OF_RDAP_PROTOCOL,
             "status" : False,
             "host" : form_hostname(cls.DOMAIN_HOST),
-            "query_host" : cls.DOMAIN_HOST or " - ",
+            "query_host" : cls.DOMAIN_HOST or UNDEFINED_DATA,
             "content" : {
                 "domain" : domain,
                 "dns" : UNDEFINED_DATA,
