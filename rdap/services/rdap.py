@@ -178,7 +178,7 @@ class RdapApi:
         return data
 
     @classmethod # TODO docstrings
-    def _get_context(cls) -> dict:
+    def _get_context_data(cls) -> dict:
         return cls.CLIENT.get(cls.DOMAIN_HOST)
 
     @save_history # TODO docstrings
@@ -188,7 +188,7 @@ class RdapApi:
         if not self.IS_PART_OF_RDAP_PROTOCOL:
             return schema
 
-        context = self._get_context()
+        context = self._get_context_data()
         if context.get("status"):
             schema["status"] = True
             return schema
