@@ -224,6 +224,7 @@ def format_domain_output(data:dict) -> str:
     """
     return message
 
+
 def convert_dict_into_txt(data:dict) -> str:
 
     line = ""
