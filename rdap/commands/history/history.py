@@ -1,4 +1,6 @@
+import os
 import click
+from rdap.settings import CACHE_FILE_PATH
 from rdap.commands.history.utils import (
     get_record,
     generate_table,
@@ -39,4 +41,28 @@ def detail(id):
 
     click.echo(
         message
+    )
+
+@history.command(name="clear")
+def clear():
+    """Clean history.
+    """
+
+    try:
+        os.remove(CACHE_FILE_PATH)
+    except FileNotFoundError:
+        return click.echo(
+            click.style(
+                "[INFO] - You have no history to delete.",
+                fg=MessageColors.YELLOW,
+                bold=True,
+            )
+        )
+    
+    click.echo(
+        click.style(
+            "[DONE] - Removed successfully",
+            fg=MessageColors.GREEN,
+            bold=True,
+        )
     )

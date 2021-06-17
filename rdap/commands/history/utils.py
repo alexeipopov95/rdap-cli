@@ -9,9 +9,6 @@ from rdap.common.constants import (
 from rdap.settings import (
     CACHE_FILE_PATH
 )
-from rdap.common.exceptions import (
-    FileDoesNotExist,
-)
 
 # TODO: Docstrings
 def decorate(key, value):
@@ -52,11 +49,11 @@ def get_content(history:list) -> list:
 def generate_table():
     try:
         history = load_file_data(CACHE_FILE_PATH)
-    except FileDoesNotExist:
+    except FileNotFoundError:
         return click.echo(
             click.style(
-                "There are no records available yet.",
-                fg=MessageColors.RED,
+                "[INFO] - There are no records available yet.",
+                fg=MessageColors.YELLOW,
                 bold=True,
             )
         )

@@ -6,7 +6,6 @@ import tldextract
 from datetime import datetime
 from rdap.settings import UNDEFINED_DATA
 from rdap.common.exceptions import (
-    FileDoesNotExist,
     ImproperlyConfiguredFile,
     NotSupportedFormat,
 )
@@ -71,9 +70,7 @@ def load_file_data(filename:str) -> dict:
     """
 
     if not os.path.isfile(filename):
-        raise FileDoesNotExist(
-            "The file you are trying to access does not exist yet."
-        )
+        raise FileNotFoundError()
 
 
     with open(filename, "r") as output:
