@@ -10,8 +10,16 @@ from rdap.settings import (
     CACHE_FILE_PATH
 )
 
-# TODO: Docstrings
-def decorate(key, value):
+def decorate(key:str, value:str) -> str:
+    """In charge of decorate the domain status column
+
+    Args:
+        key (str): [get the key from the context]
+        value (str): [get the value from the context]
+
+    Returns:
+        str: [return a user-friendly status]
+    """
 
     if isinstance(value, bool) and key == "status":
         if value:
@@ -29,14 +37,30 @@ def decorate(key, value):
     return value
 
 
-# TODO: Docstrings
 def get_headers(history:list) -> list:
+    """In charge of preparing the table headers.
+    Only picks the element 0.
+
+    Args:
+        history (list): [this is a list with elements]
+
+    Returns:
+        list: [return a list with the elements to be show in the table as headers]
+    """
     return [
         head.upper().replace("_", " ") for head in history[0] if not "content" in head
     ]
 
-# TODO: Docstrings
+
 def get_content(history:list) -> list:
+    """In charge of preparing the table rows.
+
+    Args:
+        history (list): [this is a list of dicts]
+
+    Returns:
+        list: [a list of lists ready to be show in the table]
+    """
 
     body = []
     for objects in history:
@@ -47,8 +71,14 @@ def get_content(history:list) -> list:
 
     return body
 
-# TODO: Docstrings
+
 def generate_table():
+    """Just as the function says, generate a table based on the
+    get_headers and get_content functions.
+
+    Returns:
+        [type]: [return a table]
+    """
     try:
         history = load_file_data(CACHE_FILE_PATH)
     except FileNotFoundError:
@@ -72,11 +102,23 @@ def generate_table():
     )
 
 
-def get_record(id): # DOC STRINGS
+def get_record(id:str) -> tuple(dict, str):
+    """In charge of get the specific ID passed from the context
+    and return the payload related to it in the history json-file.
+
+    Args:
+        id ([str]): [description]
+
+    Returns:
+        [tuple[dict|str]]: [
+            return a dict if the record was found or a string
+            if not
+        ]
+    """
 
     try:
         _history = load_file_data(CACHE_FILE_PATH)    
-    except FileNotFoundError as ex:
+    except FileNotFoundError:
         return click.echo(
             click.style(
                 f"[ERROR] - {id} does not exist in your history. ¿Have you deleted it?",
@@ -96,4 +138,3 @@ def get_record(id): # DOC STRINGS
             bold=True,
         )
     )
-

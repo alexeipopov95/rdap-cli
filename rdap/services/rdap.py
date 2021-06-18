@@ -21,8 +21,15 @@ from rdap.settings import (
     CACHE_FILE_PATH
 )
 
-# TODO docstrings
+
 def save_history(method):
+    """
+    Decorator designed to save the query into a json-file when 'gather' command
+    or 'check' were called.
+
+    Args:
+        method ([type]): Receive classmethod.
+    """
     def save(cls):
         data = method(cls)
 
@@ -56,7 +63,6 @@ class RdapApi:
     AVAILABLE_TO_REGISTER = False
     DOMAIN_HOST = None
 
-    # TODO docstrings
     def __init__(self, domain:str) -> None:
         self.domain = domain
 
@@ -74,8 +80,17 @@ class RdapApi:
 
         self.DOMAIN_HOST = self._get_host(self.domain)
 
-    @classmethod # TODO docstrings
-    def _get_host(cls, domain:str) -> str:
+    @classmethod
+    def _get_host(cls, domain:str) -> None:
+        """
+        In charge of getting the domain host and determine
+        if the domain is part of the RDAP protocol or not.
+
+        Args:
+            domain (str): [Domain name. I.e: 'example.com']
+
+        """
+
         context = load_file_data(cls.DNS_FILE_PATH)
 
         for tld, service in context.get("services"):
@@ -83,15 +98,15 @@ class RdapApi:
                 cls.IS_PART_OF_RDAP_PROTOCOL = True
                 cls.DOMAIN_HOST = "{0}domain/{1}".format(service[0], domain)
 
-    @classmethod # TODO docstrings
-    def _get_schema(cls, domain:str) -> dict:
-        """ WIP
+    @classmethod
+    def _get_scheme(cls, domain:str) -> dict:
+        """
+        Returns the scheme that will later be rendered in the commands.
 
         Args:
             domain (str): [Domain name. I.e: 'example.com']
-
         Returns:
-            dict: [A full schema of the info to be showed on screen later]
+            dict: [A full scheme of the info to be showed on screen later]
         """
 
         schema = {
@@ -114,27 +129,41 @@ class RdapApi:
 
         return schema
 
-    @classmethod # TODO docstrings
+    @classmethod
     def _get_nameservers(cls, context_data:dict) -> list:
-        """return a list of nameservers related to the domain
+        """
+        Return a list of nameservers related to the domain.
+
         Args:
-            context_data (dict): [description]
+            context_data (dict): [
+                The complete payload comming from the host    
+            ]
         Returns:
             list: [a list of nameservers]
         """
 
         dns_list = []
-
         if 'nameservers' in context_data:
             while len(dns_list) < (len(context_data['nameservers'])):
                 dns_list.append(context_data['nameservers'][len(dns_list)]['ldhName'].lower())
 
         return dns_list
 
-    @classmethod # TODO docstrings
+    @classmethod
     def _get_events(cls, context_data:dict) -> dict:
-        events = {}
+        """
+        In charge of parsing the context data and look up for the
+        domain events (expiration date, creation date, etc.)
 
+        Args:
+            context_data (dict): [
+                The complete payload comming from the host    
+            ]
+        Returns:
+            dict: [A dictionary with the timestamps of the domain]
+        """
+
+        events = {}
         if context_data:
             for event in context_data['events']:
 
@@ -160,8 +189,22 @@ class RdapApi:
 
         return events
 
-    @classmethod # TODO docstrings
+    @classmethod
     def _get_owner_data(cls, contex_data:dict, domain:str) -> dict:
+        """
+        In charge of parsing the context data and look up for the
+        domain specific data, making focus on the owners data.
+
+        Args:
+            context_data (dict): [
+                The complete payload comming from the host    
+            ]
+            domain (str): [Domain name. I.e: 'example.com']
+
+        Returns:
+            dict: [Returns a dictionary with the domain owner data]
+        """
+
         data = {}
         if contex_data:
             if domain.endswith(".ar"):
@@ -177,13 +220,28 @@ class RdapApi:
             
         return data
 
-    @classmethod # TODO docstrings
+    @classmethod
     def _get_context_data(cls) -> dict:
+        """
+        Make a request into the domain host and retrive all the
+        context data required to be parsed latter.
+
+        Returns:
+            dict: [Return the full context data from the host]
+        """
+
         return cls.CLIENT.get(cls.DOMAIN_HOST)
 
-    @save_history # TODO docstrings
-    def query(self):
-        schema = self._get_schema(self.domain)
+    @save_history
+    def query(self) -> dict:
+        """
+        In charge of gathering all the information about the domain
+        and putting together a context to be delivered later.
+
+        Returns:
+            dict: [Return the formated sheme with the domain information]
+        """
+        schema = self._get_scheme(self.domain)
 
         if not self.IS_PART_OF_RDAP_PROTOCOL:
             return schema

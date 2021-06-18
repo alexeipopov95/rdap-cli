@@ -12,8 +12,15 @@ def settings(ctx):
 
 @settings.command()
 def set():
+    """
+    Modify some params of the CLI
+    """
     print("SET WIP")
 
 @settings.command()
 def show():
+    """
+    Show the available params of the CLI.
+    Their status and values.
+    """    
     print("SHOW WIP")

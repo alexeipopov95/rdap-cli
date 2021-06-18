@@ -35,13 +35,13 @@ Yes, like i said, if you wish to save the output into a file you simply can spec
 * JSON
 * TEXT
 
-Simply you need to pass the next order:
+You need to pass the next order:
 
 > `$ rdap gather example.com --save=my_file.json`
 
     [DONE] - File saved successfully.
 
-And thats it... Simply as that you will find the file in your current working directory. 
+And thats it... That you will find the file in your current working directory. 
 
 ### Return value from shell - [JSON]
 ------------------------------------------------------------

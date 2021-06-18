@@ -15,8 +15,7 @@ from rdap.common.constants import (
 @click.group(name="history", invoke_without_command=True)
 @click.pass_context
 def history(ctx):
-    """ Return a table with the history of the
-    lattest queryes. """
+    """ Returns a table with the history of the last searches. """
 
     if ctx.invoked_subcommand is None:
         generate_table()
@@ -25,6 +24,8 @@ def history(ctx):
 @history.command(name="detail")
 @click.argument("id")
 def detail(id):
+    """Returns the detail of the specific ID."""
+
     output = get_record(id)
     if output:
         message = format_domain_output(output)
@@ -32,10 +33,10 @@ def detail(id):
             message
         )
 
+
 @history.command(name="clear")
 def clear():
-    """Clean history.
-    """
+    """ Clean history. """
 
     try:
         os.remove(CACHE_FILE_PATH)

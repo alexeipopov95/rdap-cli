@@ -3,14 +3,10 @@ class SaveCommandError(Exception):
 
 
 class NotSupportedFormat(SaveCommandError):
+    """
+    This exception occurs when the user entersa text
+    format that is not valid or is not supported by the cli.
+    """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-
-class FileReadError(Exception):
-    pass
-
-
-class ImproperlyConfiguredFile(FileReadError):
-    def __init__(self, msg):
-        super().__init__(msg)

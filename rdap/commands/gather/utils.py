@@ -12,6 +12,17 @@ from rdap.common.utils import (
 
 
 def _has_subdomain(domain:str) -> None:
+    """In charge of validate if the domain contains a subdomain
+
+    Args:
+        domain (str): [Some domain name. I.e example.com]
+
+    Raises:
+        DomainWithSubdomain: [
+            Raised when the domain validation regex has found a match
+            with a subdomain passed by input with the domain.
+        ]
+    """
     subdomain = get_subdomain(domain)
     if subdomain:
         raise DomainWithSubdomain(
@@ -24,6 +35,18 @@ def _has_subdomain(domain:str) -> None:
         )
 
 def _has_http(domain:str) -> None:
+    """In charge of validate if the domain contains http or https strings
+
+    Args:
+        domain (str): [Some domain name. I.e example.com]
+
+    Raises:
+        DomainWithHttp: [
+            Raised when the domain validation found http or https
+            in the domain input.
+        ]
+    """
+
     if "http" in domain:
         raise DomainWithHttp(
             (
@@ -35,6 +58,19 @@ def _has_http(domain:str) -> None:
         )
 
 def _regex_domain(domain:str) -> None:
+    """In charge of validate if the domain matches with the standart
+    domain regex (use of external library - 'Validators')
+
+    Args:
+        domain (str): [Some domain name. I.e example.com]
+
+    Raises:
+        DomainValidationError: [
+            Raised when the domain validation regex does not match
+            any coincidence with the domain.
+        ]
+    """
+
     if not validators.domain(domain):
         raise DomainValidationError(
             (
@@ -46,6 +82,14 @@ def _regex_domain(domain:str) -> None:
         )
 
 def domain_validator(domain:str) -> str:
+    """Validator to check if the input domain is valid or not.
+
+    Args:
+        domain (str): [Some domain name. I.e example.com]
+
+    Returns:
+        str: [return back the domain if it is all ok]
+    """
     _has_http(domain)
     _has_subdomain(domain)
     _regex_domain(domain)

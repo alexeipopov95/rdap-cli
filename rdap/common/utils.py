@@ -6,11 +6,9 @@ import tldextract
 from datetime import datetime
 from rdap.settings import UNDEFINED_DATA
 from rdap.common.exceptions import (
-    ImproperlyConfiguredFile,
     NotSupportedFormat,
 )
 from rdap.common.constants import (
-    FormatterStatus,
     TextFormatConstants,
     MessageColors,
     DomainAvailability,
@@ -19,54 +17,22 @@ from rdap.common.constants import (
 AVAILABLE_EXTENCION = (
     TextFormatConstants.JSON,
     TextFormatConstants.TEXT,
-    #TextFormatConstants.YML,
 )
 
 
-def _json_file_parser(file) -> str:
-    data = load_file_data(file)
-    domain_list = data.get("domains")
-    if not domain_list:
-        raise ImproperlyConfiguredFile(
-            f"The {TextFormatConstants.JSON} is expecting 'domains' as key field. "
-            "Please make sure that the key is 'domains' and "
-            "the value is a non empty array of domains."
-        )
+def load_file_data(filename:str) -> dict or str:
+    """Receive a filename, try to check if the format is valid and
+    return the respective data according to its format.
 
-    return domain_list
-
-
-def _txt_file_parser(file) -> str:
-    data = load_file_data(file)
-    return data.split("\n")
-
-
-def _yml_file_parser() -> str:
-    print("YML file parser")
-    pass
-
-
-FILE_PARSER_MAP = {
-    TextFormatConstants.JSON : _json_file_parser,
-    TextFormatConstants.TEXT : _txt_file_parser,
-    #TextFormatConstants.YML : _yml_file_parser,
-}
-
-
-def formater(message:str, status:str) -> click.style:
-    status_color = FormatterStatus.formater_color_map.get(status, "INFO")
-    return click.style(
-        f"[{status}] - {message}",
-        fg=status_color
-    )
-
-
-def load_file_data(filename:str) -> dict:
-    """receive a file name and return as a dict
     Args:
-        filename (str): [filename]
+        filename (str): [Filename. I.e: my_file.json]
+    Raises:
+        FileNotFoundError: [raise if the file is not found]
     Returns:
-        dict: [return a dict object]
+        dict or str: [
+            deppending on the file format return
+            a dict object or a str
+        ]
     """
 
     if not os.path.isfile(filename):
@@ -78,18 +44,23 @@ def load_file_data(filename:str) -> dict:
             data = json.load(output)
         elif filename.endswith(TextFormatConstants.TEXT):
             data = output.read()
-        elif filename.endswith(TextFormatConstants.YML):
-            pass
 
     return data
 
 
 def save_file_data(data:dict, filename:str, _type:str) -> None:
-    """Save data in a file
+    """Save the data in the corresponding file.
+
     Args:
-        data (dict): [data to be saved]
-        filename (str): [filename where data is going to be saved]
-        _type (str): [Specify the file type]
+        data (dict): [Data to be saved]
+        filename (str): [Filename. I.e: my_file.json]
+        _type (str): [Define the file type]
+
+    Raises:
+        NotSupportedFormat: [
+            This exception occurs when the user entersa text
+            format that is not valid or is not supported by the cli.
+        ]
     """
 
     if _type not in AVAILABLE_EXTENCION:
@@ -109,30 +80,48 @@ def save_file_data(data:dict, filename:str, _type:str) -> None:
 
 
 def string_to_datetime(date:str) -> datetime:
+    """Convert a datetime stringified into a datetime object
+
+    Args:
+        date (str): [Datetime as string]
+
+    Returns:
+        datetime: [Datetime as datetime.datetime]
+    """
+
     if date:
         return dateutil.parser.parse(date).replace(tzinfo=None)
     return date
 
 
 def datetime_to_string(date:datetime) -> str:
+    """Convert a datetime object into a datetime stringified.
+
+    Args:
+        date (datetime): [Datetime object]
+
+    Returns:
+        str: [Datetime as String]
+    """
+    
     if date:
         return date.strftime("%Y-%m-%d %H:%M")
     return date
 
 
-def file_parser(file:str):
-    _, extension = file.split(".", 1)
-
-    if not extension in AVAILABLE_EXTENCION:
-        raise NotSupportedFormat(
-            f"The extension '.{extension}' is not supported yet"
-        )
-
-    maped_file = FILE_PARSER_MAP.get(extension)
-    return maped_file(file)
-
-
 def get_subdomain(domain:str) -> str:
+    """Receive a domain and parse it returning the subdomain
+    based on a regex pattern. (external library)
+
+    Args:
+        domain (str): [Receive a domain. I.e example.com]
+
+    Returns:
+        str: [
+            Return only the subdomain of the domain.
+            I.e if blog.example.com -> blog
+        ]
+    """
     try:
         return tldextract.extract(domain).subdomain
     except TypeError:
@@ -140,6 +129,18 @@ def get_subdomain(domain:str) -> str:
 
 
 def get_domain(domain:str) -> str:
+    """Receive a domain and parse it returning the domain
+    based on a regex pattern. (external library)
+
+    Args:
+        domain (str): [Receive a domain. I.e example.com]
+
+    Returns:
+        str: [
+            Return only the subdomain of the domain.
+            I.e if blog.example.com -> example
+        ]
+    """
     try:
         return tldextract.extract(domain).domain
     except TypeError:
@@ -147,13 +148,35 @@ def get_domain(domain:str) -> str:
 
 
 def get_suffix(domain:str) -> str:
+    """Receive a domain and parse it returning the suffix
+    based on a regex pattern. (external library)
+
+    Args:
+        domain (str): [Receive a domain. I.e example.com]
+
+    Returns:
+        str: [
+            Return only the suffix of the domain.
+            I.e if blog.example.com -> com
+        ]
+    """
     try:
         return tldextract.extract(domain).suffix
     except TypeError:
         return ''
 
 
-def form_hostname(data:dict) -> str:
+def form_hostname(data:str) -> str:
+    """In charge of forming a hostname based on the data
+    received. If data is true return a descent hostname.
+    I.e https://example.com
+
+    Args:
+        data (str): [receive a domain name or host name]
+
+    Returns:
+        str: [a more beautiful hostname]
+    """
     domain = get_domain(data)
     suffix = get_suffix(data)
 
@@ -163,6 +186,15 @@ def form_hostname(data:dict) -> str:
 
 
 def get_availability(data:dict) -> str:
+    """This is to avoid repeating the code so many times.
+    It is mainly used to define the domain availability status and color it.
+
+    Args:
+        data (dict): [dict with some data from the context]
+
+    Returns:
+        str: [return a stringified version of the domain's availability]
+    """
 
     if data.get("status"):
         availability = click.style(
@@ -185,6 +217,16 @@ def get_availability(data:dict) -> str:
 
 
 def format_domain_output(data:dict) -> str:
+    """This is to avoid repeating the code so many times.
+    It is mainly used to format a user-friendly view when
+    it is called from the gather or the check commands.
+
+    Args:
+        data (dict): [dict with data from the context]
+
+    Returns:
+        str: [return a stringified version of the domain's data]
+    """
 
     is_available = get_availability(data)    
     data = data["content"]
@@ -226,6 +268,15 @@ def format_domain_output(data:dict) -> str:
 
 
 def convert_dict_into_txt(data:dict) -> str:
+    """This function recursively converts the contents of a dictionary
+    to plain text and then be delivered in a text file.
+
+    Args:
+        data (dict): [The data to be converted into txt]
+
+    Returns:
+        str: [The converted dictionary into text]
+    """
 
     line = ""
     for key, value in data.items():
