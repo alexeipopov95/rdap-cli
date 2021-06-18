@@ -74,8 +74,26 @@ def generate_table():
 
 def get_record(id): # DOC STRINGS
 
-    _history = load_file_data(CACHE_FILE_PATH)
+    try:
+        _history = load_file_data(CACHE_FILE_PATH)    
+    except FileNotFoundError as ex:
+        return click.echo(
+            click.style(
+                f"[ERROR] - {id} does not exist in your history. ¿Have you deleted it?",
+                fg=MessageColors.RED,
+                bold=True
+            )
+        )
+
     for record in _history:
         if str(id) == str(record["id"]):
             return record
+
+    return click.echo(
+        click.style(
+            f"[ERROR] - Nothing was found to match with this '{id}'",
+            fg=MessageColors.RED,
+            bold=True,
+        )
+    )
 

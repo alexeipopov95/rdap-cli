@@ -25,23 +25,12 @@ def history(ctx):
 @history.command(name="detail")
 @click.argument("id")
 def detail(id):
-    
     output = get_record(id)
-    
-    if not output:
-        return click.echo(
-            click.style(
-                f"Nothing was found to match with this '{id}'",
-                fg=MessageColors.RED,
-                bold=True,
-            )
+    if output:
+        message = format_domain_output(output)
+        click.echo(
+            message
         )
-    
-    message = format_domain_output(output)
-
-    click.echo(
-        message
-    )
 
 @history.command(name="clear")
 def clear():
@@ -61,7 +50,7 @@ def clear():
     
     click.echo(
         click.style(
-            "[DONE] - Removed successfully",
+            "[DONE] - History was cleaned.",
             fg=MessageColors.GREEN,
             bold=True,
         )

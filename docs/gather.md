@@ -1,6 +1,6 @@
 # GATHER
 
-## Gather command itself
+## Gather command
 Gather is a simple command that is in charge of obtaining the relevant information about a domain. Information such as the expiration date, the nameservers, 
 creation date on registry database, last updates on when it was updated by the owner or in the RDAP records.
 Additionally to it in some special cases (I.e Argentinian domains) it will show the individual taxpayer identification number (CUIT) and the owner itself.
@@ -27,6 +27,7 @@ Then you will see the next result
         Registrant ID: None
 
 ## Gather has some usefull options!
+------------------------------------------------------------
 
 Yes, like i said, if you wish to save the output into a file you simply can specify the name of the file and thats it! The CLI will format the data into a user friendly format (or dev friendly format) and thats it.
 
@@ -43,6 +44,7 @@ Simply you need to pass the next order:
 And thats it... Simply as that you will find the file in your current working directory. 
 
 ### Return value from shell - [JSON]
+------------------------------------------------------------
 This is going to be the output saved in your `.json` file:
 
     {
@@ -63,6 +65,7 @@ This is going to be the output saved in your `.json` file:
     }
 
 ### Return value from shell - [TEXT]
+------------------------------------------------------------
 This is going to be the output saved in your `.json` file:
 
     is_rdap: True
@@ -80,8 +83,7 @@ This is going to be the output saved in your `.json` file:
     name: None
 
 
-### Unexpected Cases
-
+## Unexpected Cases
 --------------------------------------------------------
 
 In those cases where the file format is not supported you will receive a prompt notifying you that is not supported yed.
@@ -99,7 +101,8 @@ Take in mind that the CLI will raise some exceptions if you dont give propperly 
 It will raise `DomainWithHttp` | `DomainValidationError` | `DomainWithSubdomain`. This are the three main validations that the CLI do to avoid malformed domain names. \
 Dont worry, if you did not read this part and pass anyway the domain with all those errors the CLI will try to help you to form it good.
 
-#### Examples:
+## Examples:
+------------------------------------------------------------
 > `rdap check https://myexample.com`
 
     [ERROR] Only admits valid domain names. Try deleting 'https://' and try again please.
