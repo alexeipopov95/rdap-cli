@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+
+## [0.1.1] - 18 Jun 2021
+
+### Fixed
+- Documentation links
+
 ## [0.1.0] - 18 Jun 2021
 
 ### Changed
