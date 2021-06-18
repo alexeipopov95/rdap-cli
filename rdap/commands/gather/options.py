@@ -10,11 +10,11 @@ from rdap.commands.gather.exceptions import (
 )
 
 class Save:
+    FILE_TYPE = None
     AVAILABLE_EXTENCION = (
         TextFormatConstants.JSON,
         TextFormatConstants.TEXT,
     )
-    FILE_TYPE = None
 
     @classmethod
     def _validate_format(cls, filename:str) -> type:
