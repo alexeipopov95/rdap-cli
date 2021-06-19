@@ -16,7 +16,7 @@ def get_packages() -> list:
 
 setup(
     name="rdap-cli",
-    version="1.0.1",
+    version="1.0.2",
     author="Alexei Popov",
     author_email="alexei.popov.cli@gmail.com",
     entry_points={
