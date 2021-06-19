@@ -133,3 +133,4 @@ dmypy.json
 
 # json files
 dns.json
+cache.json
