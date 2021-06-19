@@ -1,3 +1,4 @@
+from os import path
 from setuptools import setup, find_packages
 
 
@@ -14,11 +15,18 @@ def get_packages() -> list:
     return root + package_list
 
 
+_cwd = path.abspath(path.dirname(__file__))
+with open(path.join(_cwd, "README.md"), encoding="utf-8") as f:
+    _long_description = f.read()
+
+
 setup(
     name="rdap-cli",
     version="1.0.3",
     author="Alexei Popov",
     author_email="alexei.popov.cli@gmail.com",
+    long_description=_long_description,
+    long_description_content_type="text/markdown",
     entry_points={
         "console_scripts": [
             "rdap=rdap.rdap:cli",
