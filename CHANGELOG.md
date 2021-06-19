@@ -8,6 +8,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Released]
 
+## [1.0.1] - 19 Jun 2021
+
+### Changed
+- modified setup.py settings to upload in pypi
+
 ## [1.0.0] - 19 Jun 2021
 
 ### Added
