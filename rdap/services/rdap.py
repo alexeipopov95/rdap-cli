@@ -18,7 +18,8 @@ from rdap.settings import (
     BASE_DIR,
     RDAP_DNS_FILENAME,
     UNDEFINED_DATA,
-    CACHE_FILE_PATH
+    CACHE_FILE_PATH,
+    CACHE_LIMIT_RECORDS,
 )
 
 
@@ -43,6 +44,10 @@ def save_history(method):
         data["id"] = str(uuid.uuid4())
         data["timestamp"] = datetime_to_string(datetime.now())
         output = load_file_data(CACHE_FILE_PATH)
+
+        if len(output) >= CACHE_LIMIT_RECORDS:
+            output.pop(0)
+
         output.append(data)
 
         save_file_data(

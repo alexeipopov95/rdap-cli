@@ -55,19 +55,12 @@ class Save:
                     bold=True
                 )
             )
-        
-        if cls.FILE_TYPE == TextFormatConstants.JSON:
-            save_file_data(
-                content,
-                filename,
-                TextFormatConstants.JSON,
-            )
-        elif cls.FILE_TYPE == TextFormatConstants.TEXT:
-            save_file_data(
-                content,
-                filename,
-                TextFormatConstants.TEXT,
-            )
+
+        save_file_data(
+            content,
+            filename,
+            cls.FILE_TYPE,
+        )
 
         # TODO: Return the path where the file was saved.
         return click.echo(

@@ -1,5 +1,6 @@
 import click
 from tabulate import tabulate
+from typing import Union
 from rdap.common.utils import (
     load_file_data
 )
@@ -10,7 +11,8 @@ from rdap.settings import (
     CACHE_FILE_PATH
 )
 
-def decorate(key:str, value:str) -> str:
+
+def decorate(key:str, value:str) -> Union[dict,str]:
     """In charge of decorate the domain status column
 
     Args:
@@ -102,7 +104,7 @@ def generate_table():
     )
 
 
-def get_record(id:str) -> tuple(dict, str):
+def get_record(id:str) -> dict:
     """In charge of get the specific ID passed from the context
     and return the payload related to it in the history json-file.
 

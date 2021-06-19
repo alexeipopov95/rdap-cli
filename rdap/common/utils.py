@@ -72,8 +72,7 @@ def save_file_data(data:dict, filename:str, _type:str) -> None:
 
         if _type == TextFormatConstants.JSON:
             json.dump(data, input)
-        elif _type == TextFormatConstants.YML:
-            pass 
+
         elif _type == TextFormatConstants.TEXT:
             data = convert_dict_into_txt(data)
             input.write(data)
