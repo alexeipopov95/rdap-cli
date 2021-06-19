@@ -117,6 +117,7 @@ class RdapApi:
         schema = {
             "is_rdap" : cls.IS_PART_OF_RDAP_PROTOCOL,
             "status" : False,
+            "domain" : domain,
             "host" : form_hostname(cls.DOMAIN_HOST),
             "query_host" : cls.DOMAIN_HOST or UNDEFINED_DATA,
             "content" : {

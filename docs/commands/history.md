@@ -11,11 +11,11 @@ The way of casting the command is the next:
 
 Then you will see a nice table showing the next values
 
-|IS RDAP |  STATUS  |    HOST    |   HOSTQUERY HOST  |  ID  |TIMESTAMP |
-|:-----: |:--------:|:----------:|:-----------------:|:----:|:--------:|
-|Yes     | Taken    |example.com | example.com/host/ | uuid | datetime |
-|No      | Taken    |Unknown     | Unknown           | uuid | datetime |
-|Yes     | Available|example.com | example.com/host/ | uuid | datetime |
+|IS RDAP |  STATUS  | DOMAIN |    HOST    |   HOSTQUERY HOST  |  ID  |TIMESTAMP |
+|:-----: |:--------:|:------:|:----------:|:-----------------:|:----:|:--------:|
+|Yes     | Taken    |domain.com|example.com | example.com/host/ | uuid | datetime |
+|No      | Taken    |domain.net|Unknown     | Unknown           | uuid | datetime |
+|Yes     | Available|domain.org|example.com | example.com/host/ | uuid | datetime |
 
 ## Detail
 --------------------------------------------------------

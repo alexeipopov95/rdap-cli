@@ -27,6 +27,9 @@ Already exist a file called requirements.txt but for practical uses we are going
 |Validators|0.18.2|pip install validators|[DOCS](https://github.com/kvesteri/validators)|[PyPI](https://pypi.org/project/validators/)|
 |PyYAML|5.4.1|pip install PyYAML|[DOCS](https://pyyaml.org/wiki/PyYAMLDocumentation)|[PyPI](https://pypi.org/project/PyYAML/)|
 |Tabulate|0.8.9|pip install tabulate|[DOCS](https://github.com/astanin/python-tabulate)|[PyPI](https://pypi.org/project/tabulate/)|
+|Pre Commit|2.13.0|pip install pre-commit|[DOCS](https://pre-commit.com/)|[PyPI](https://pypi.org/project/pre-commit/)|
+|Flake8|3.9.2|pip install flake8|[DOCS](https://flake8.pycqa.org/en/latest/)|[PyPI](https://pypi.org/project/flake8/)|
+|Black|21.6b0|pip install black|[DOCS](https://github.com/psf/black)|[PyPI](https://pypi.org/project/black/)|
 
 
 ## Features
@@ -35,7 +38,7 @@ Already exist a file called requirements.txt but for practical uses we are going
 - Provide useful information whether for personal or work use.
 - Replaces traditional whois.
 - Allow you to save the payload into multiple format files such as '.json' or '.txt'.
-- Allow you to check multiple domains at the same time using a specific file format.
+- It allows you to see your past searches with the help of a history.
 
 ## Guide
 You can check the tutorial [HERE](docs/user_guide.md)

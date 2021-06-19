@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [0.1.3] - 19 Jun 2021
+
+### Added
+- pre-commit framework
+- Black
+- Flake8
+- New field in the table of history 'domain'
+
+### Change
+- Documentation in history command.
+
+### Removed
+- Removed 'settings' command from the rdap layout. [WIP]
+
 ## [0.1.2] - 19 Jun 2021
 
 ### Added

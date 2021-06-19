@@ -33,9 +33,9 @@ def get_packages() -> list:
 
 setup(
     name = "rdap",
-    version = "0.1.2",
+    version = "0.1.3",
     author = "Alexei Popov",
-    author_email = "",
+    author_email = "alexei.popov.cli@gmail.com",
     entry_points = {
         "console_scripts" : [
             "rdap=rdap.rdap:cli",
@@ -43,7 +43,7 @@ setup(
     },
     description= (
         "A simple CLI designed to offer a quick way of gathering domain"
-        "data information. And for practicing."
+        "data information."
     ),
     python_requires=">=3.6",
     install_requires = read_requirements(),
