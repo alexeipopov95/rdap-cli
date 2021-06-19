@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [Released]
+
+## [1.0.0] - 19 Jun 2021
+
+### Added
+- Documentation about Black and Flake8
+- Extra rules into pre-commit
+
+### Changed
+- CLI version changed to 1.0.0
+
+### Fixed
+- Fixed 404 link in the documentation.
+
 ## [0.1.4] - 19 Jun 2021
 
 ### Change
@@ -66,5 +80,3 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Settings file.
 - Version Command.
 - Settings Command.
-
-## [Released]
