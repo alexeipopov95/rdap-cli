@@ -38,7 +38,7 @@ def save_history(method):
         if not os.path.isfile(CACHE_FILE_PATH):
             save_file_data([], CACHE_FILE_PATH, TextFormatConstants.JSON)
 
-        data["id"] = str(uuid.uuid4())
+        data["id"] = str(uuid.uuid4())[:8]
         data["timestamp"] = datetime_to_string(datetime.now())
         output = load_file_data(CACHE_FILE_PATH)
 

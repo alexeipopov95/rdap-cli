@@ -8,6 +8,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Released]
 
+## [1.0.3] - 19 Jun 2021
+
+### Fixed
+- Bugfix on command version.
+
+### Changed
+- Changed the default length of uuid displayed in the history table to 8
+
 ## [1.0.2] - 19 Jun 2021
 
 ### Fixed
