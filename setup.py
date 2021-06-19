@@ -16,7 +16,7 @@ def get_packages() -> list:
 
 setup(
     name="rdap-cli",
-    version="1.0.0",
+    version="1.0.1",
     author="Alexei Popov",
     author_email="alexei.popov.cli@gmail.com",
     entry_points={
@@ -30,7 +30,7 @@ setup(
     ),
     url="https://github.com/alexeipopov95/rdap-cli",
     download_url=(
-        "https://github.com/alexeipopov95/rdap-cli/archive/refs/tags/1.0.0.tar.gz"
+        "https://github.com/alexeipopov95/rdap-cli/archive/refs/tags/1.0.1.tar.gz"
     ),
     keywords=["rdap", "cli", "whois", "registration-date", "data", "domain"],
     python_requires=">=3.6",
