@@ -30,7 +30,7 @@ setup(
     ),
     url="https://github.com/alexeipopov95/rdap-cli",
     download_url=(
-        "https://github.com/alexeipopov95/rdap-cli/archive/refs/tags/1.0.1.tar.gz"
+        "https://github.com/alexeipopov95/rdap-cli/archive/refs/tags/1.0.2.tar.gz"
     ),
     keywords=["rdap", "cli", "whois", "registration-date", "data", "domain"],
     python_requires=">=3.6",
