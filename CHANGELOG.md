@@ -8,6 +8,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Released]
 
+## [1.0.4] - 19 Jun 2021
+
+### Changed
+- Documentation switched to absolute links.
+
+### Added
+- Added a file reader in setup.py to show the README.md in the Pypi.
+
 ## [1.0.3] - 19 Jun 2021
 
 ### Fixed

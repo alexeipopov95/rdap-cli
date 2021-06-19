@@ -1,4 +1,4 @@
-![](https://badgen.net/badge/icon/github?icon=github&label) ![](https://img.shields.io/badge/Python%20Version-3.8.5-blue) ![](https://img.shields.io/badge/release%20-1.0.0-red)
+![](https://badgen.net/badge/icon/github?icon=github&label) ![](https://img.shields.io/badge/Python%20Version->=3.6-blue) ![](https://img.shields.io/badge/release%20-1.0.4-red)
 
 ![](https://www.selectallfromdual.com/blog/wp-content/uploads/2019/11/rdap.jpg)
 
@@ -12,7 +12,7 @@ This program is in charge of collecting all the relevant information related to 
 ## Utils
 *Json TLD file:  [Json File](https://data.iana.org/rdap/dns.json)* \
 *Rdap deployment:  [DATA](https://deployment.rdap.org/)* \
-*Project format: [format](docs/black_and_flake.md)*
+*Project format: [format](https://github.com/alexeipopov95/rdap-cli/blob/master/docs/black_and_flake.md)*
 
 ## Requirements
 Already exist a file called requirements.txt but for practical uses we are going to mention here too.
@@ -41,4 +41,4 @@ Already exist a file called requirements.txt but for practical uses we are going
 - It allows you to see your past searches with the help of a history.
 
 ## Guide
-You can check the tutorial [HERE](docs/user_guide.md)
+You can check the tutorial [HERE](https://github.com/alexeipopov95/rdap-cli/blob/master/docs/user_guide.md)

@@ -22,7 +22,7 @@ with open(path.join(_cwd, "README.md"), encoding="utf-8") as f:
 
 setup(
     name="rdap-cli",
-    version="1.0.3",
+    version="1.0.4",
     author="Alexei Popov",
     author_email="alexei.popov.cli@gmail.com",
     long_description=_long_description,
@@ -38,7 +38,7 @@ setup(
     ),
     url="https://github.com/alexeipopov95/rdap-cli",
     download_url=(
-        "https://github.com/alexeipopov95/rdap-cli/archive/refs/tags/1.0.3.tar.gz"
+        "https://github.com/alexeipopov95/rdap-cli/archive/refs/tags/1.0.4.tar.gz"
     ),
     keywords=["rdap", "cli", "whois", "registration-date", "data", "domain"],
     python_requires=">=3.6",
