@@ -1,4 +1,4 @@
-![](https://badgen.net/badge/icon/github?icon=github&label) ![](https://img.shields.io/badge/Python%20Version->=3.6-blue) ![](https://img.shields.io/badge/release%20-1.0.4-red)
+![](https://img.shields.io/badge/Python%20Version->=3.6-blue) ![](https://img.shields.io/badge/Code%20style%20-Black-black)
 
 ![](https://www.selectallfromdual.com/blog/wp-content/uploads/2019/11/rdap.jpg)
 
