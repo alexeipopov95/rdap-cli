@@ -1,7 +1,7 @@
 # GATHER
 
 ## Gather command
-Gather is a simple command that is in charge of obtaining the relevant information about a domain. Information such as the expiration date, the nameservers, 
+Gather is a simple command that is in charge of obtaining the relevant information about a domain. Information such as the expiration date, the nameservers,
 creation date on registry database, last updates on when it was updated by the owner or in the RDAP records.
 Additionally to it in some special cases (I.e Argentinian domains) it will show the individual taxpayer identification number (CUIT) and the owner itself.
 
@@ -37,11 +37,11 @@ Yes, like i said, if you wish to save the output into a file you simply can spec
 
 You need to pass the next order:
 
-> `$ rdap gather example.com --save=my_file.json`
+> `$ rdap gather example.com --file=my_file.json`
 
     [DONE] - File saved successfully.
 
-And thats it... That you will find the file in your current working directory. 
+And thats it... That you will find the file in your current working directory.
 
 ### Return value from shell - [JSON]
 ------------------------------------------------------------
@@ -94,7 +94,7 @@ In those cases where the file format is not supported you will receive a prompt 
 
 --------------------------------------------------------
 
-Take in mind that the CLI will raise some exceptions if you dont give propperly the domain name. For example: 
+Take in mind that the CLI will raise some exceptions if you dont give propperly the domain name. For example:
 
 > `rdap check https://blog.myexample.com/web/images/pic1.jpg`
 

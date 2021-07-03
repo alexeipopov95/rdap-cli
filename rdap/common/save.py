@@ -1,13 +1,13 @@
-from rdap.common.utils import save_file_data
-from typing import Any
+import os
 import click
+from typing import Any
+from rdap.common.utils import save_file_data
 from rdap.common.constants import (
     MessageColors,
     TextFormatConstants,
 )
-from rdap.commands.gather.exceptions import (
-    NotSupportedFileFormat
-)
+from rdap.common.exceptions import NotSupportedFileFormat
+
 
 class Save:
     FILE_TYPE = None
@@ -17,7 +17,7 @@ class Save:
     )
 
     @classmethod
-    def _validate_format(cls, filename:str) -> type:
+    def _validate_format(cls, filename: str) -> type:
         """Validate if the fileformat is supported by the CLI.
 
         Args:
@@ -28,7 +28,7 @@ class Save:
                 Raised when the CLI found a non supported file format.
             ]
         """
-        extention = filename.split('.',1)[1]
+        extention = filename.split(".", 1)[1]
         if not filename.endswith(cls.AVAILABLE_EXTENCION):
             raise NotSupportedFileFormat(
                 f"The fileformat [{extention}] is not supported yet."
@@ -36,7 +36,7 @@ class Save:
         cls.FILE_TYPE = extention
 
     @classmethod
-    def save_harvest(cls, filename:str, content:Any):
+    def save_harvest(cls, filename: str, content: Any):
         """Save the content into the filename if the file format
         is supported.
 
@@ -49,11 +49,7 @@ class Save:
             cls._validate_format(filename)
         except NotSupportedFileFormat as ex:
             return click.echo(
-                click.style(
-                    f"[ERROR] - {ex}",
-                    fg=MessageColors.RED,
-                    bold=True
-                )
+                click.style(f"[ERROR] - {ex}", fg=MessageColors.RED, bold=True)
             )
 
         save_file_data(
@@ -62,10 +58,9 @@ class Save:
             cls.FILE_TYPE,
         )
 
-        # TODO: Return the path where the file was saved.
         return click.echo(
             click.style(
-                "[DONE] - File saved successfully.",
+                f"[DONE] - File saved successfully in {os.getcwd()}/{filename}",
                 fg=MessageColors.GREEN,
                 bold=True,
             )

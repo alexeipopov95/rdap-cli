@@ -1,12 +1,15 @@
-class SaveCommandError(Exception):
-    pass
+class FileError(Exception):
+    def __init__(self, message):
+        super().__init__(message)
 
 
-class NotSupportedFormat(SaveCommandError):
+class FileDoesNotExist(FileError):
     """
-    This exception occurs when the user entersa text
-    format that is not valid or is not supported by the cli.
+    This exception is raised when the file is not found.
     """
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+
+class NotSupportedFileFormat(FileError):
+    """
+    Raised when the CLI found a non supported file format.
+    """

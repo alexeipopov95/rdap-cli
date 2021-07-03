@@ -1,6 +1,9 @@
 from os import path
 from setuptools import setup, find_packages
 
+_version = "1.1.0"
+_cwd = path.abspath(path.dirname(__file__))
+
 
 def get_packages() -> list:
     """simple function designed to return a list
@@ -15,14 +18,12 @@ def get_packages() -> list:
     return root + package_list
 
 
-_cwd = path.abspath(path.dirname(__file__))
 with open(path.join(_cwd, "README.md"), encoding="utf-8") as f:
     _long_description = f.read()
 
-
 setup(
     name="rdap-cli",
-    version="1.0.4",
+    version=_version,
     author="Alexei Popov",
     author_email="alexei.popov.cli@gmail.com",
     long_description=_long_description,
@@ -38,7 +39,7 @@ setup(
     ),
     url="https://github.com/alexeipopov95/rdap-cli",
     download_url=(
-        "https://github.com/alexeipopov95/rdap-cli/archive/refs/tags/1.0.4.tar.gz"
+        f"https://github.com/alexeipopov95/rdap-cli/archive/refs/tags/{_version}.tar.gz"
     ),
     keywords=["rdap", "cli", "whois", "registration-date", "data", "domain"],
     python_requires=">=3.6",
