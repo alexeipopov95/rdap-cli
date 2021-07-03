@@ -8,6 +8,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Released]
 
+## [1.1.1] - 03 Jul 2021
+
+### Added
+- Short tutorial in the user_guide.md
+- History download command example in history.md
+
+### Fixed
+- typos in gather.md
+
 ## [1.1.0] - 03 Jul 2021
 
 ### Changed

@@ -39,7 +39,7 @@ You need to pass the next order:
 
 > `$ rdap gather example.com --file=my_file.json`
 
-    [DONE] - File saved successfully.
+    [DONE] - File saved successfully in /path/to/file/my_file.json
 
 And thats it... That you will find the file in your current working directory.
 
@@ -88,7 +88,7 @@ This is going to be the output saved in your `.json` file:
 
 In those cases where the file format is not supported you will receive a prompt notifying you that is not supported yed.
 
-> `$ rdap gather example.com --save=my_file.yml`
+> `$ rdap gather example.com --file=my_file.yml`
 
     [ERROR] - The fileformat [yml] is not supported yet.
 

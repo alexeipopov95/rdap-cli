@@ -42,11 +42,22 @@ And the expected output is going to be:
         Registrant ID: None
 
 
+## Download
+--------------------------------------------------------
+
+The download command is used to download all the history that one has accumulated so far.
+
+> `$ rdap history download my_file.json`
+
+    [DONE] - File saved successfully in /path/to/file/my_file.json
+
+Take in mind that the download subcommand takes as argument a `str` file name. And the only formats it supports are `.json` and `.txt`.
+
 
 ## Clear
 --------------------------------------------------------
 
-The clear subcommand is used to just clean your history. 
+The clear subcommand is used to just clean your history.
 
 > `$ rdap history clear`
 
