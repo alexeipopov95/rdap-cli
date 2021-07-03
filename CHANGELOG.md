@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Moved the Save class into a common dir to be used by multiple operations.
 - Changed the gather option --save into --file.
 - Internal function to convert dict into text before saving now support lists.
+- Badges in README.md
 
 ### Added
 - Added a new subcommand to history 'download'.
