@@ -8,6 +8,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Released]
 
+## [1.1.0] - 03 Jul 2021
+
+### Changed
+- Moved the Save class into a common dir to be used by multiple operations.
+- Changed the gather option --save into --file.
+- Internal function to convert dict into text before saving now support lists.
+
+### Added
+- Added a new subcommand to history 'download'.
+
+### Deleted
+- Deleted some unused exceptions.
+- Deleted unused files in gather command directory.
+
 ## [1.0.4] - 19 Jun 2021
 
 ### Changed
