@@ -1,22 +1,23 @@
 import click
 from rdap.services.rdap import RdapApi
-from rdap.common.constants import MessageColors, DomainAvailability
+from rdap.common.constants import (
+    MessageColors,
+    AlertTagMessage,
+)
 from rdap.commands.gather.utils import domain_validator
-from rdap.common.utils import (
-    form_hostname,
-    get_availability,
-) 
+from rdap.common.utils import form_hostname, get_availability, formater
 from rdap.settings import UNDEFINED_DATA
 from rdap.commands.gather.exceptions import (
     DomainWithSubdomain,
     DomainWithHttp,
-    DomainValidationError,    
+    DomainValidationError,
 )
+
 
 @click.command()
 @click.argument("domain", nargs=1)
 def check(domain) -> None:
-    """ Check if the domain is available or not. """
+    """Check if the domain is available or not."""
 
     try:
         domain_validator(domain)
@@ -25,13 +26,7 @@ def check(domain) -> None:
         DomainWithHttp,
         DomainValidationError,
     ) as ex:
-        return click.echo(
-            click.style(
-                f"[ERROR] {ex}",
-                fg=MessageColors.RED,
-                bold=True,
-            )
-    )
+        return formater(ex, AlertTagMessage.ERROR)
 
     schema = RdapApi(domain).query()
     is_available = get_availability(schema)

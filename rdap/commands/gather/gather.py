@@ -1,8 +1,8 @@
-from rdap.common.constants import MessageColors
 import click
+from rdap.common.constants import AlertTagMessage
 from rdap.services.rdap import RdapApi
 from rdap.commands.gather.utils import domain_validator
-from rdap.common.utils import format_domain_output
+from rdap.common.utils import format_domain_output, formater
 from rdap.commands.gather.exceptions import (
     DomainWithSubdomain,
     DomainWithHttp,
@@ -30,13 +30,7 @@ def gather(domain: str, filename: str) -> None:
     try:
         domain_validator(domain)
     except (DomainWithSubdomain, DomainWithHttp, DomainValidationError) as ex:
-        return click.echo(
-            click.style(
-                f"[ERROR] {ex}",
-                fg=MessageColors.RED,
-                bold=True,
-            )
-        )
+        return formater(ex, AlertTagMessage.ERROR)
 
     schema = RdapApi(domain).query()
 

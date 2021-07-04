@@ -49,7 +49,7 @@ The download command is used to download all the history that one has accumulate
 
 > `$ rdap history download my_file.json`
 
-    [DONE] - File saved successfully in /path/to/file/my_file.json
+    [DONE] - File saved successfully to /path/to/file/my_file.json
 
 Take in mind that the download subcommand takes as argument a `str` file name. And the only formats it supports are `.json` and `.txt`.
 
@@ -61,7 +61,7 @@ The clear subcommand is used to just clean your history.
 
 > `$ rdap history clear`
 
-    [DONE] - History was cleaned.
+    [DONE] - Cleaned succesfully.
 
 
 ## Unexpected Cases
@@ -69,7 +69,7 @@ The clear subcommand is used to just clean your history.
 
 If you want to check the history without searching a domain before and this is your first time you will see a message telling the next:
 
-    [INFO] - There are no records available yet.
+    [INFO] - No records available yet. Make a query first.
 
 
 If the domain is not part of the RDAP Protocol the CLI cannot guarante if its really taken or not because the Top level domain of the queryed domain is not part yet of this protocol.

@@ -1,6 +1,7 @@
 import click
 import pkg_resources
-from rdap.common.constants import MessageColors
+from rdap.common.utils import formater
+from rdap.common.constants import AlertTagMessage
 
 
 @click.command(name="version")
@@ -10,4 +11,4 @@ def version():
     """
 
     version = pkg_resources.require("rdap-cli")[0].version
-    click.echo(click.style(str(version), fg=MessageColors.YELLOW, bold=True))
+    return formater(f"Rdap CLI version: {version}", AlertTagMessage.INFO)

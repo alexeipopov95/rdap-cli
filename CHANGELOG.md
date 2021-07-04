@@ -8,6 +8,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Released]
 
+## [1.1.2] - 04 Jul 2021
+
+### Added
+- New internal function to make more generic the alert messages.
+
+### Changed
+- Changed output messages in some commands.
+
+### Fixed
+- Fixed an unexpected exception when passing an invalid file format.
+- Typos.
+
 ## [1.1.1] - 03 Jul 2021
 
 ### Added
