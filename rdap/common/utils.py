@@ -12,6 +12,7 @@ from rdap.common.constants import (
     TextFormatConstants,
     MessageColors,
     DomainAvailability,
+    AlertTagMessage,
 )
 
 AVAILABLE_EXTENCION = (
@@ -321,3 +322,29 @@ def convert_dict_into_txt(data: dict) -> str:
                 line += f"{key}: {value}\n"
 
     return line
+
+
+def formater(message: str, status: str) -> click.echo:
+    """Simple formatter for generic alert messages.
+
+    Args:
+        message (str): [The message you want to display]
+        status (str): [The status define the color and the meta tag of the message]
+
+    Returns:
+        click.echo: [Click.echo styled message]
+    """
+
+    color_map = {
+        AlertTagMessage.INFO: MessageColors.YELLOW,
+        AlertTagMessage.ERROR: MessageColors.RED,
+        AlertTagMessage.DONE: MessageColors.GREEN,
+    }
+
+    return click.echo(
+        click.style(
+            f"[{status.upper()}] - {message}",
+            fg=color_map.get(status, MessageColors.WHITE),
+            bold=True,
+        )
+    )

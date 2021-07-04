@@ -8,10 +8,9 @@ from rdap.commands.history.utils import (
 from rdap.common.utils import (
     format_domain_output,
     load_file_data,
+    formater,
 )
-from rdap.common.constants import (
-    MessageColors,
-)
+from rdap.common.constants import AlertTagMessage
 from rdap.common.save import Save
 
 
@@ -28,7 +27,7 @@ def history(ctx):
 @click.argument("id")
 def detail(id):
     """Returns the detail of the specific ID."""
-
+    print(id)
     output = get_record(id)
     if output:
         message = format_domain_output(output)
@@ -42,21 +41,11 @@ def clear():
     try:
         os.remove(CACHE_FILE_PATH)
     except FileNotFoundError:
-        return click.echo(
-            click.style(
-                "[INFO] - You have no history to delete.",
-                fg=MessageColors.YELLOW,
-                bold=True,
-            )
+        return formater(
+            "Nothing to delete.",
+            AlertTagMessage.INFO,
         )
-
-    click.echo(
-        click.style(
-            "[DONE] - History was cleaned.",
-            fg=MessageColors.GREEN,
-            bold=True,
-        )
-    )
+    formater("Cleaned succesfully.", AlertTagMessage.DONE)
 
 
 @history.command(name="download")
@@ -67,12 +56,6 @@ def download(filename):
     try:
         _history = load_file_data(CACHE_FILE_PATH)
     except FileNotFoundError:
-        return click.echo(
-            click.style(
-                "[INFO] - Nothing to download.",
-                fg=MessageColors.YELLOW,
-                bold=True,
-            )
-        )
+        return formater("Nothing to download.", AlertTagMessage.INFO)
 
     Save().save_harvest(filename, _history)

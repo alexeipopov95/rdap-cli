@@ -1,7 +1,7 @@
 from os import path
 from setuptools import setup, find_packages
 
-_version = "1.1.1"
+_version = "1.1.2"
 _cwd = path.abspath(path.dirname(__file__))
 
 

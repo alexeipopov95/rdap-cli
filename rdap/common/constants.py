@@ -1,3 +1,10 @@
+class AlertTagMessage:
+    DONE = "done"
+    INFO = "info"
+    ERROR = "error"
+    DEBUG = "debug"
+
+
 class MessageColors:
     BLACK = "black"
     GREEN = "green"
@@ -25,6 +32,6 @@ class DomainAvailability:
     UNAVAILABLE = "UNAVAILABLE"
 
     availability_color_map = {
-        AVAILABLE : MessageColors.GREEN,
-        UNAVAILABLE : MessageColors.RED
+        AVAILABLE: MessageColors.GREEN,
+        UNAVAILABLE: MessageColors.RED,
     }

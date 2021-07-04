@@ -1,11 +1,7 @@
 import os
-import click
 from typing import Any
-from rdap.common.utils import save_file_data
-from rdap.common.constants import (
-    MessageColors,
-    TextFormatConstants,
-)
+from rdap.common.utils import save_file_data, formater
+from rdap.common.constants import TextFormatConstants, AlertTagMessage
 from rdap.common.exceptions import NotSupportedFileFormat
 
 
@@ -28,10 +24,15 @@ class Save:
                 Raised when the CLI found a non supported file format.
             ]
         """
-        extention = filename.split(".", 1)[1]
+
+        try:
+            extention = filename.split(".", 1)[1]
+        except IndexError:
+            raise NotSupportedFileFormat("Invalid file format.")
+
         if not filename.endswith(cls.AVAILABLE_EXTENCION):
             raise NotSupportedFileFormat(
-                f"The fileformat [{extention}] is not supported yet."
+                f"The fileformat [{extention}] is not supported."
             )
         cls.FILE_TYPE = extention
 
@@ -48,8 +49,9 @@ class Save:
         try:
             cls._validate_format(filename)
         except NotSupportedFileFormat as ex:
-            return click.echo(
-                click.style(f"[ERROR] - {ex}", fg=MessageColors.RED, bold=True)
+            return formater(
+                ex,
+                AlertTagMessage.ERROR,
             )
 
         save_file_data(
@@ -57,11 +59,7 @@ class Save:
             filename,
             cls.FILE_TYPE,
         )
-
-        return click.echo(
-            click.style(
-                f"[DONE] - File saved successfully in {os.getcwd()}/{filename}",
-                fg=MessageColors.GREEN,
-                bold=True,
-            )
+        return formater(
+            f"File successfully saved to {os.getcwd()}/{filename}",
+            AlertTagMessage.DONE,
         )
